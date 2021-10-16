@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import Home from "../pages/Home.jsx";
+import Home from "../pages/Home";
+import MenuBar from "../components/MenuBar";
 import NotFound from "../pages/NotFound";
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
@@ -12,6 +13,7 @@ class App extends React.Component {
     return (
       <Router>
         <div>
+          <MenuBar />
           <Switch>
             <Route exact path="/" component={Home} />
             {/* <Route path="/signout" component={Signout}/> */}
