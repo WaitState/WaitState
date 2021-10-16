@@ -1,0 +1,11 @@
+*.iml
+.idea
+.DS_Store
+node_modules
+settings.production.json
+app/.deploy/mup.js
+app/.deploy/settings.json
+/.idea/workspace.xml
+.env
+.vscode
+app/node_modules
