@@ -1,15 +1,49 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 
 const MenuBar = (props) => {
-    return (
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const isOpen = Boolean(anchorEl);
+
+  const handleProfileMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const profileMenuId = "profileMenu";
+  renderProfileMenu = (
+    <Menu
+      id={profileMenuId}
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isOpen}
+      onClose={handleClose}
+    >
+      <MenuItem onClick={handleClose}>Login</MenuItem>
+      <MenuItem onClick={handleClose}>Signup</MenuItem>
+    </Menu>
+  );
+
+  return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
@@ -22,15 +56,22 @@ const MenuBar = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button>
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton
+            size="large"
+            aria-label="user account"
+            aria-controls={profileMenuId}
+            aria-haspopup="true"
+            onClick={handleProfileMenu}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
         </Toolbar>
       </AppBar>
+      {renderProfileMenu}
     </Box>
-
-    );
+  );
 };
 
 export default MenuBar;
