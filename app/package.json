@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.15.8",
-    "@babel/runtime": "^7.15.3",
+    "@babel/runtime": "^7.15.4",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@mui/core": "^5.0.0-alpha.51",
