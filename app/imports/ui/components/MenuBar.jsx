@@ -1,54 +1,54 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
-import { styled, alpha } from "@mui/material/styles"
+import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Menu from "@mui/material/Menu";
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search"
+import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter } from "react-router-dom";
 
-const SearchBox = styled('div')(({ theme }) => ({
-  position: 'relative',
+const SearchBox = styled("div")(({ theme }) => ({
+  position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
+  "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: '100%',
+  width: "100%",
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
+  color: "inherit",
+  "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
     },
   },
 }));
@@ -65,10 +65,9 @@ const MenuBar = (props) => {
 
   const closeDrawer = () => {
     setDrawerAnchorEl(null);
-  }
+  };
 
   const handleProfileMenu = (event) => {
-    console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
@@ -76,21 +75,27 @@ const MenuBar = (props) => {
     setAnchorEl(null);
   };
 
-  const drawerId = 'drawerMenu';
-  const renderDrawerList = (
-    <Box
-      role="presentation"
-      onClick={closeDrawer}
-      onKeyDown={closeDrawer}
+  const drawerId = "drawerMenu";
+  const renderDrawer= (
+    <Drawer
+      id={drawerId}
+      anchor="left"
+      open={isDrawerOpen}
+      onClose={closeDrawer}
     >
-      <List>
-        {[ 'WaitState', 'Hospital Directory'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemText primary={text} />
-          </ListItem>  
-        ))}
-      </List>
-    </Box>
+      <Box role="presentation" onClick={closeDrawer} onKeyDown={closeDrawer}>
+        <List>
+          {[
+            ["WaitState", "/"],
+            ["Hospital Directory", "/asd"],
+          ].map((text, index) => (
+            <ListItem button component={Link} to={text[1]} key={text[0]}>
+              <ListItemText primary={text[0]} />
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Drawer>
   );
 
   const profileMenuId = "profileMenu";
@@ -130,21 +135,14 @@ const MenuBar = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Drawer
-            id={drawerId}
-            anchor='left'
-            open={isDrawerOpen}
-            onClose={closeDrawer}
-          >
-            {renderDrawerList}
-          </Drawer>
+          {renderDrawer}
           <SearchBox>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase 
+            <StyledInputBase
               placeholder="Search hospitals"
-              inputProps={{ 'aria-label': 'search'}}
+              inputProps={{ "aria-label": "search" }}
             />
           </SearchBox>
           <IconButton
