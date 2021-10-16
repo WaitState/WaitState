@@ -5,6 +5,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Home from "../pages/Home";
 import MenuBar from "../components/MenuBar";
+import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
@@ -16,6 +17,8 @@ class App extends React.Component {
           <MenuBar />
           <Switch>
             <Route exact path="/" component={Home} />
+            {/* will make register page private to admins only */}
+            <Route path="/" component={Register} />
             {/* <Route path="/signout" component={Signout}/> */}
             {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}
             {/* <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/> */}
