@@ -5,13 +5,17 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Menu from "@mui/material/Menu";
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search"
 import InputBase from "@mui/material/InputBase";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { ClassNames } from "@emotion/react";
+import { Link, withRouter } from 'react-router-dom';
 
 const SearchBox = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -51,15 +55,43 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const MenuBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const isOpen = Boolean(anchorEl);
+  const [drawerAnchorEl, setDrawerAnchorEl] = React.useState(null);
+  const isDrawerOpen = Boolean(drawerAnchorEl);
+  const isProfileMenuOpen = Boolean(anchorEl);
+
+  const openDrawer = (event) => {
+    setDrawerAnchorEl(event.currentTarget);
+  };
+
+  const closeDrawer = () => {
+    setDrawerAnchorEl(null);
+  }
 
   const handleProfileMenu = (event) => {
+    console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const drawerId = 'drawerMenu';
+  const renderDrawerList = (
+    <Box
+      role="presentation"
+      onClick={closeDrawer}
+      onKeyDown={closeDrawer}
+    >
+      <List>
+        {[ 'WaitState', 'Hospital Directory'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemText primary={text} />
+          </ListItem>  
+        ))}
+      </List>
+    </Box>
+  );
 
   const profileMenuId = "profileMenu";
   const renderProfileMenu = (
@@ -75,7 +107,7 @@ const MenuBar = (props) => {
         vertical: "top",
         horizontal: "right",
       }}
-      open={isOpen}
+      open={isProfileMenuOpen}
       onClose={handleClose}
     >
       <MenuItem onClick={handleClose}>Login</MenuItem>
@@ -92,10 +124,20 @@ const MenuBar = (props) => {
             edge="start"
             color="inherit"
             aria-label="menu"
+            aria-controls={drawerId}
             sx={{ mr: 2 }}
+            onClick={openDrawer}
           >
             <MenuIcon />
           </IconButton>
+          <Drawer
+            id={drawerId}
+            anchor='left'
+            open={isDrawerOpen}
+            onClose={closeDrawer}
+          >
+            {renderDrawerList}
+          </Drawer>
           <SearchBox>
             <SearchIconWrapper>
               <SearchIcon />
