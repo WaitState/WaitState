@@ -6,6 +6,7 @@ import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import Home from "../pages/Home.jsx";
 import Register from "../pages/Register.jsx";
 import NotFound from "../pages/NotFound";
+import AdminLogin from "../pages/AdminLogin";
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 class App extends React.Component {
@@ -17,6 +18,7 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             {/* will make register page private to admins only */}
             <Route path="/" component={Register} />
+            <Route path="/login" component={AdminLogin} />
             {/* <Route path="/signout" component={Signout}/> */}
             {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}
             {/* <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/> */}
