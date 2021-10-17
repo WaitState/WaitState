@@ -5,9 +5,24 @@ import { Tracker } from 'meteor/tracker';
 const Hospitals = new Mongo.Collection('Hospitals');
 
 const HospitalSchema = new SimpleSchema({
-  FacilityID: String,
-  FacilityName: String,
-    Address: String,
+  facilityID: String,
+  facilityName: String,
+  address: String,
+  city: String,
+  state: String,
+  zipCode: Number,
+  countyName: String,
+  phoneNumber: String,
+  hospitalType: String,
+  emergencyServices: String,
+  averageWaitTime: {
+    type: String,
+    defaultValue: "0",
+  },
+  patientList: {
+    type: String,
+    defaultValue: "0",
+  }
 
 }, { tracker: Tracker });
 
