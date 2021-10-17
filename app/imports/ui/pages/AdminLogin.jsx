@@ -1,27 +1,26 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/system";
 import { Button, Input, Typography } from "@mui/material";
 
-const useStyles = makeStyles({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "150px auto",
-    textAlign: "center",
-    alignItems: "center",
-    width: "35%",
-  },
-  input: {
-    width: "100%",
-    height: "50px",
-    margin: "15px 0",
-  },
+const Container = styled('div')({
+  display: "flex",
+  flexDirection: "column",
+  margin: "150px auto",
+  textAlign: "center",
+  alignItems: "center",
+  width: "35%",
+});
+
+const MyInput = styled(Input)({
+  width: "100%",
+  height: "50px",
+  margin: "15px 0",
 });
 
 export default AdminLogin = ({ history }) => {
-  const classes = useStyles();
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -41,32 +40,32 @@ export default AdminLogin = ({ history }) => {
   };
 
   return (
-    <div className={classes.container}>
+    <Container>
       <Typography variant="h3">Admin Login</Typography>
-      {error && <span className={classes.error}>{error}</span>}
+      {error && <span>{error}</span>}
       <form onSubmit={handleSubmit}>
-        <Input
+        <MyInput
           fullWidth
-          className={classes.input}
+          
           id="email"
           name="email"
           placeholder="email"
           onChange={(e) => setEmail(e.target.value)}
-        ></Input>
-        <Input
+        ></MyInput>
+        <MyInput
           fullWidth
-          className={classes.input}
+          
           id="password"
           name="password"
           type="password"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
-        ></Input>
+        ></MyInput>
 
         <Button variant="contained" type="submit">
           Login
         </Button>
       </form>
-    </div>
+    </Container>
   );
 };
