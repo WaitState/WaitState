@@ -2,24 +2,24 @@ import React from "react";
 import { Meteor } from "meteor/meteor";
 import { withTracker } from 'meteor/react-meteor-data'
 import PropTypes from "prop-types";
-import { UseParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Hospitals } from "../../api/hospital/Hospital";
-import { Container, Box, CircularProgress, Backdrop, List, ListItem, ListItemButton, ListItemText, TextField, Button } from "@mui/material";
+import { Container, Box, CircularProgress, Backdrop, List, ListItem, ListItemButton, ListItemText, TextField, Button, Pagination } from "@mui/material";
 
 const Directory = (props) => {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
     const [searchString, setSearchString] = React.useState(null);
     const [directory, setDirectory] = React.useState([]);
     const { ready } = props;
+    const params = useParams();
 
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
     }
-
-    const handleSubmit = (e) => {
+    const handleSubmit = () => {
         console.log(searchString);
         if (searchString === null) {
-            setDirectory(Hospitals.find().fetch());       
+            setDirectory(Hospitals.find({state:"HI"}).fetch());       
         } else {
             setDirectory(Hospitals.find({ state: searchString }).fetch());
         }
@@ -36,12 +36,12 @@ const Directory = (props) => {
                 </Backdrop>
             ) : (
                 <Container sx={{ display: 'flex', alighItems: 'center' }}>
-                    <Box component="form" onSubmit={handleSubmit} sx={{ paddingTop: '10px' }}>
+                    <Box component="form" autoComplete="true" onSubmit={handleSubmit} sx={{ paddingTop: '10px' }}>
                             <TextField
                                 helperText="Search by city"
                                 id="search-field"
                                 label="search-field"
-                                defaultValue={null}
+                                defaultValue=""
                                 onChange={(e) => setSearchString(e.target.value)}
                             />
                             <Button type="submit">Submit</Button>
