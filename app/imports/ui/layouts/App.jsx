@@ -25,7 +25,7 @@ const App = (props) => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/register" component={Register} />
-          <Route path="/directory" component={Directory} />
+          <Route path="/directory/:page" component={Directory} />
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/login" component={PatientLogin} />
           {/* <Route path="/signout" component={Signout}/> */}
