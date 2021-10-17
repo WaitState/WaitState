@@ -14,6 +14,7 @@ import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
 import AdminLogin from "../pages/AdminLogin";
 import PatientLogin from "../pages/PatientLogin";
+import Directory from "../pages/Directory";
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = (props) => {
@@ -23,8 +24,8 @@ const App = (props) => {
         <MenuBar />
         <Switch>
           <Route exact path="/" component={Home} />
-          {/* will make register page private to admins only */}
           <Route path="/register" component={Register} />
+          <Route path="/directory" component={Directory} />
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/login" component={PatientLogin} />
           {/* <Route path="/signout" component={Signout}/> */}

@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 // import { Patients } from 'app/imports/api/patient/Patient';
-// import { Hospitals } from 'app/imports/api/hospital/Hospital';
+ import { Hospitals } from 'app/imports/api/hospital/Hospital';
 
 
 
@@ -25,10 +25,10 @@ Meteor.publish(null, function () {
 //     return this.ready();
 // });
 
-// Publish a role for each hospital
-// Meteor.publish('Hospital', function publish() {
-//   if (this.userID) {
-//     return Hospitals.find({ userID:  this.userID });
-//   }
-//   return this.ready();
-// });
+//Publish a role for each hospital
+Meteor.publish('Hospital', function publish() {
+  if (this.userID) {
+    return Hospitals.find({ userID:  this.userID });
+  }
+  return this.ready();
+});

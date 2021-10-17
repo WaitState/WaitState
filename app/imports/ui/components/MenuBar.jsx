@@ -87,7 +87,7 @@ const MenuBar = (props) => {
         <List>
           {[
             ["WaitState", "/"],
-            ["Hospital Directory", "/asd"],
+            ["Hospital Directory", "/directory"],
           ].map((text, index) => (
             <ListItem button component={Link} to={text[1]} key={text[0]}>
               <ListItemText primary={text[0]} />
