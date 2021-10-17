@@ -1,11 +1,10 @@
 import { Meteor } from 'meteor/meteor';
+import { Hospitals } from '../../api/hospital/Hospital';
 
 /* eslint-disable no-console */
 
-// Initialize the database with a default data document.
 function addData(data) {
-  console.log(`  Adding: ${data.name} (${data.owner})`);
-  Stuffs.collection.insert(data);
+  hospital.collection.insertData(data);
 }
 
 // Initialize collections here

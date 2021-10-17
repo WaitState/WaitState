@@ -5,10 +5,10 @@ import { Tracker } from 'meteor/tracker';
 const Hospitals = new Mongo.Collection('Hospitals');
 
 const HospitalSchema = new SimpleSchema({
-  firstName: String,
-  lastName: String,
-  waitTime: String,
-  patients: Object,
+  FacilityID: String,
+  FacilityName: String,
+    Address: String,
+
 }, { tracker: Tracker });
 
 Hospitals.attachSchema(HospitalSchema);

@@ -10,7 +10,7 @@ const PatientSchema = new SimpleSchema({
   lastName: String,
   reason: String,
   checkInStatus: Boolean,
-  checkInTime: Date,
+  checkInTime: String,
   checkInUserID: String,
 }, { tracker: Tracker });
 
