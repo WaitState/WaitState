@@ -28,10 +28,27 @@ const handleSubmit = (e) => {
 
 export default AdminLogin = ({ history }) => {
   const classes = useStyles();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    Meteor.loginWithPassword(email, password, (err) => {
+      if (err) {
+        console.log(err.reason);
+        setError(err.reason);
+      } else {
+        history.push("/");
+        console.log(Accounts.users);
+      }
+    });
+  };
+
   return (
     <div className={classes.container}>
-      <Typography variant="h3">Login</Typography>
+      <Typography variant="h3">Admin Login</Typography>
       {error && <span className={classes.error}>{error}</span>}
       <form onSubmit={handleSubmit}>
         <Input
@@ -40,7 +57,7 @@ export default AdminLogin = ({ history }) => {
           id="email"
           name="email"
           placeholder="email"
-          // onChange={(e) => setFirstname(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         ></Input>
         <Input
           fullWidth
@@ -49,11 +66,10 @@ export default AdminLogin = ({ history }) => {
           name="password"
           type="password"
           placeholder="Password"
-          // onChange={(e) => setLastname(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         ></Input>
 
         <Button variant="contained" type="submit">
-          {" "}
           Login
         </Button>
       </form>

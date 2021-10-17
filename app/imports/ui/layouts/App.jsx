@@ -19,7 +19,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             {/* will make register page private to admins only */}
-            <Route path="/" component={Register} />
+            <Route path="/register" component={Register} />
             <Route path="/login" component={AdminLogin} />
             {/* <Route path="/signout" component={Signout}/> */}
             {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}
