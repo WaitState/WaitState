@@ -4,7 +4,7 @@ import { withTracker } from 'meteor/react-meteor-data'
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { Hospitals } from "../../api/hospital/Hospital";
-import { Container, Box, CircularProgress, Backdrop, List, ListItem, ListItemButton, ListItemText, TextField, Button, Pagination } from "@mui/material";
+import { Container, Box, CircularProgress, Backdrop, List, ListItem, ListItemButton, ListItemText, TextField, Button, Pagination, Paper, Grid } from "@mui/material";
 
 const Directory = (props) => {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -19,7 +19,7 @@ const Directory = (props) => {
     const handleSubmit = () => {
         console.log(searchString);
         if (searchString === null) {
-            setDirectory(Hospitals.find({state:"HI"}).fetch());       
+            setDirectory(Hospitals.find({ state: "HI" }).fetch());
         } else {
             setDirectory(Hospitals.find({ state: searchString }).fetch());
         }
@@ -36,7 +36,9 @@ const Directory = (props) => {
                 </Backdrop>
             ) : (
                 <Container sx={{ display: 'flex', alighItems: 'center' }}>
-                    <Box component="form" autoComplete="true" onSubmit={handleSubmit} sx={{ paddingTop: '10px' }}>
+                    <Grid spacing={1} sx={{ justifyContent: 'center', width: '100%' }}>
+                        <Grid item component="form" autoComplete="true" onSubmit={handleSubmit} xs={12} sx={{ paddingTop: '10px' }}>
+
                             <TextField
                                 helperText="Search by city"
                                 id="search-field"
@@ -45,16 +47,21 @@ const Directory = (props) => {
                                 onChange={(e) => setSearchString(e.target.value)}
                             />
                             <Button type="submit">Submit</Button>
-                    </Box>
-                    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'grey' }}>
-                        <List component="nav" aria-label="main mailbox folders">
-                            {directory.map((item, index) => (
-                                <ListItemButton key={index} selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, { index })}>
-                                    <ListItemText primary={item.facilityName} />
-                                </ListItemButton>
-                            ))}
-                        </List>
-                    </Box>
+                        </Grid>
+                        <Grid item>
+                            <Paper elevation={1}>
+                                <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'grey' }}>
+                                    <List component="nav" aria-label="main mailbox folders">
+                                        {directory.map((item, index) => (
+                                            <ListItemButton key={index} selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, { index })}>
+                                                <ListItemText primary={item.facilityName} />
+                                            </ListItemButton>
+                                        ))}
+                                    </List>
+                                </Box>
+                            </Paper>
+                        </Grid>
+                    </Grid>
                 </Container>
             )}
         </Box>
