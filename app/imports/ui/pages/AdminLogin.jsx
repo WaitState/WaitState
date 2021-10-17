@@ -20,12 +20,6 @@ const useStyles = makeStyles({
   },
 });
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  // Meteor.call("createAccount", firstname, lastname, email, password, "user");
-  // history.push("/Login");
-};
-
 export default AdminLogin = ({ history }) => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
@@ -62,7 +56,7 @@ export default AdminLogin = ({ history }) => {
         <Input
           fullWidth
           className={classes.input}
-          id="passwork"
+          id="password"
           name="password"
           type="password"
           placeholder="Password"
