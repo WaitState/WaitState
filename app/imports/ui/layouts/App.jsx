@@ -1,36 +1,41 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
-import { Roles } from 'meteor/alanning:roles';
-import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
+import { Roles } from "meteor/alanning:roles";
+import {
+  HashRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import Home from "../pages/Home";
 import MenuBar from "../components/MenuBar";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
 import AdminLogin from "../pages/AdminLogin";
+import PatientLogin from "../pages/PatientLogin";
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
-class App extends React.Component {
-  render() {
-    return (
-      <Router>
-        <div>
-          <MenuBar />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            {/* will make register page private to admins only */}
-            <Route path="/register" component={Register} />
-            <Route path="/login" component={AdminLogin} />
-            {/* <Route path="/signout" component={Signout}/> */}
-            {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}
-            {/* <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/> */}
-            <Route component={NotFound}/>
-          </Switch>
-        </div>
-      </Router>
-    );
-  }
-}
+const App = (props) => {
+  return (
+    <Router>
+      <div>
+        <MenuBar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          {/* will make register page private to admins only */}
+          <Route path="/register" component={Register} />
+          <Route path="/admin/login" component={AdminLogin} />
+          <Route path="/login" component={PatientLogin} />
+          {/* <Route path="/signout" component={Signout}/> */}
+          {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}
+          {/* <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/> */}
+          <Route component={NotFound} />
+        </Switch>
+      </div>
+    </Router>
+  );
+};
 
 /**
  * ProtectedRoute (see React Router v4 sample)
@@ -42,10 +47,13 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
     {...rest}
     render={(props) => {
       const isLogged = Meteor.userId() !== null;
-      return isLogged ?
-        (<Component {...props} />) :
-        (<Redirect to={{ pathname: '/signin', state: { from: props.location } }}/>
-        );
+      return isLogged ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{ pathname: "/signin", state: { from: props.location } }}
+        />
+      );
     }}
   />
 );
@@ -60,11 +68,14 @@ const AdminProtectedRoute = ({ component: Component, ...rest }) => (
     {...rest}
     render={(props) => {
       const isLogged = Meteor.userId() !== null;
-      const isAdmin = Roles.userIsInRole(Meteor.userId(), 'admin');
-      return (isLogged && isAdmin) ?
-        (<Component {...props} />) :
-        (<Redirect to={{ pathname: '/signin', state: { from: props.location } }}/>
-        );
+      const isAdmin = Roles.userIsInRole(Meteor.userId(), "admin");
+      return isLogged && isAdmin ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{ pathname: "/signin", state: { from: props.location } }}
+        />
+      );
     }}
   />
 );
