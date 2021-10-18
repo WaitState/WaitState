@@ -31,7 +31,7 @@ const App = (props) => {
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/login" component={PatientLogin} />
           <Route path="/ticket" component={Ticket} />
-          <Route path="/hospital" component={Hospital} />
+          <Route path="/hospital/:hid" component={Hospital} />
 
           {/* <Route path="/signout" component={Signout}/> */}
           {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}

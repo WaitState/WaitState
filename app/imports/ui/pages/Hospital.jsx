@@ -19,7 +19,8 @@ const Container = styled(Paper)({
 });
 
 const HospitalPage = (props) => {
-
+  const props = useParams();
+  const hospital = Hospitals.findOne({facilityID: props.hid}).fetch();
   const { ready } = props;
 
   return (
