@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 // import { Patients } from 'app/imports/api/patient/Patient';
- import { Hospitals } from '../../api/hospital/Hospital';
+import { Hospitals } from '../../api/hospital/Hospital';
 
 
 

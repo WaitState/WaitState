@@ -104,6 +104,10 @@ const MenuBar = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  
+  const handleLogout = () => {
+    Meteor.logout();
+  };
 
   const handleSearch = () => {
     console.log(searchValue);
@@ -115,8 +119,9 @@ const MenuBar = (props) => {
     setOpenDialog(false);
   }
 
+
   const drawerId = "drawerMenu";
-  const renderDrawer= (
+  const renderDrawer = (
     <Drawer
       id={drawerId}
       anchor="left"
@@ -155,8 +160,16 @@ const MenuBar = (props) => {
       open={isProfileMenuOpen}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>Login</MenuItem>
-      <MenuItem onClick={handleClose}>Signup</MenuItem>
+      {Meteor.user() === "" ? (
+        <div>
+          <MenuItem component={Link} to="/admin/login" onClick={handleClose}>Login</MenuItem>
+          <MenuItem component={Link} to="/register" onClick={handleClose}>Signup</MenuItem>
+        </div>
+      ) : (
+        <div>
+        <MenuItem component={Link} to="/admin/login" onClick={handleLogout}>Logout</MenuItem>
+        </div>
+      )}
     </Menu>
   );
 
