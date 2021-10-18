@@ -11,6 +11,8 @@ import {
   TableBody,
   Table, Button, Box
 } from "@mui/material";
+import { Patients } from '../../api/patient/Patient';
+import swal from 'sweetalert';
 
 //style the outer container
 const AdminContainer = styled(Container)({
@@ -34,7 +36,6 @@ const AdminTable = styled(Table)({
 });
 
 //Style the Header of the table
-//Change tablehead to Header
 const Header = styled(TableHead)({});
 
 //For header and even Rows
@@ -72,34 +73,71 @@ const CellRow = styled(TableCell)({
 });
 
 const PageHeader = styled(Typography)({
-  fontSize: 'xx-large',
+  fontSize: "75px",
   fontWeight: 'bold',
-  marginBottom: "15px",
+  marginBottom: "10px",
 
 });
 
-const RightBox = styled(Box)({
-
-  display: 'flex',
-  flexDirection: "Row",
-  textAlign: "Right",
-  justifyContent: 'flex-end',
-  alignItems: 'flex-end',
-  alignmentBaseline: "right",
-
-
+const PanelHeader = styled(Typography)({
+  fontSize: "30px",
+  textDecoration: "underline",
+  marginBottom: "5px",
+  marginTop: "10px",
 
 });
 
 const AdminPanel = (props) => {
+
+  const [patientId, setPatientId] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [reason, setReason] = React.useState("");
+  const [checkInStatus, setCheckInStatus] = React.useState("");
+  const [checkInTime, setCheckInTime] = React.useState("");
+  const [checkInUserID, setCheckInUserID] = React.useState("");
+
+
+  const handleSubmit = event => {
+    //submit into the correction collection
+    event.preventDefault();
+
+    Patients.insert(
+        {
+          patientId,
+          firstName,
+          lastName,
+          reason,
+          checkInStatus,
+          checkInTime,
+          checkInUserID,
+
+        },(error) => {
+          if (error) {
+            swal("Error", "Missing required fields", "error").then(function () {
+
+              window.location = "/#/adminpanel";
+            });
+          } else {
+            swal({
+              text: "Success!",
+              icon: "success",
+            }).then(function () {
+              window.location = "/#/adminpanel";
+            });
+          }
+        }
+    );
+
+  };
+
+
   return (
 
       <AdminContainer>
 
         <PageHeader> Administrator Panel</PageHeader>
-        <RightBox component = "span">
-          <Button > Add a Patient</Button>
-        </RightBox>
+        <PanelHeader>List of Current Patients </PanelHeader>
         <AdminTable>
           <Header>
             <RowEven>
@@ -109,6 +147,7 @@ const AdminPanel = (props) => {
               <CellHeader>Created At</CellHeader>
               <CellHeader>Check-In Status</CellHeader>
               <CellHeader>Check-In Time</CellHeader>
+              <CellHeader>Check-Out Time</CellHeader>
               <CellHeader> </CellHeader>
             </RowEven>
           </Header>
@@ -121,7 +160,8 @@ const AdminPanel = (props) => {
               <CellRow>test reason</CellRow>
               <CellRow>test created</CellRow>
               <CellRow>test status</CellRow>
-              <CellRow>test time</CellRow>
+              <CellRow>test time In</CellRow>
+              <CellRow>test time Out</CellRow>
               <CellRow /*onClick={(e) => history.push("/patientPage")}} */>edit patient info</CellRow>
 
 
@@ -134,6 +174,7 @@ const AdminPanel = (props) => {
               <CellRow>test created</CellRow>
               <CellRow>test status</CellRow>
               <CellRow>test time</CellRow>
+              <CellRow>test time out</CellRow>
               <CellRow /*onClick={(e) => history.push("/patientPage")}} */>edit patient info</CellRow>
 
 
@@ -141,6 +182,10 @@ const AdminPanel = (props) => {
           </TableBody>
         </AdminTable>
 
+        <PanelHeader>Add a New Patient</PanelHeader>
+        <form onSubmit={handleSubmit}>
+
+        </form>
       </AdminContainer>
   );
 
