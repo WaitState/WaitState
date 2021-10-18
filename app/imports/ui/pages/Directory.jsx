@@ -15,12 +15,12 @@ const Directory = (props) => {
     const [searchField, setSearchField] = React.useState("state");
     const { ready } = props;
     const searchFields = [
-        {label: "Name", field: "facilityName"},
-        {label: "Address", field: "address"},
-        {label: "City", field: "city"},
-        {label: "State", field: "state"},
-        {label: "Zipcode", field: "zipCode"},
-        {label: "County", field: "countyName"},
+        { label: "Name", field: "facilityName" },
+        { label: "Address", field: "address" },
+        { label: "City", field: "city" },
+        { label: "State", field: "state" },
+        { label: "Zipcode", field: "zipCode" },
+        { label: "County", field: "countyName" },
     ]
     const params = useParams();
     const isMenuOpen = Boolean(anchorEl);
@@ -40,7 +40,7 @@ const Directory = (props) => {
     const handleSubmit = () => {
         console.log(searchField);
         var query = {};
-        query[searchField] = {$regex: searchString, $options: 'i'};
+        query[searchField] = { $regex: searchString, $options: 'i' };
         if (searchString === null) {
             setDirectory(Hospitals.find({ state: "HI" }).fetch());
         } else {
@@ -92,19 +92,19 @@ const Directory = (props) => {
                                     'aria-labelledby': 'menu-button',
                                     role: 'listbox',
                                 }}
-                                >
-                                    {searchFields.map((option, index) => (
-                                        <MenuItem
-                                            key={option.label}
-                                            selected={index === menuIndex}
-                                            onClick={(event) => handleMenuItemClick(event, index)}
-                                        >
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Menu>
+                            >
+                                {searchFields.map((option, index) => (
+                                    <MenuItem
+                                        key={option.label}
+                                        selected={index === menuIndex}
+                                        onClick={(event) => handleMenuItemClick(event, index)}
+                                    >
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
 
-                            <Button type="submit">Submit</Button>
+                            <Button variant="contained" type="submit">Submit</Button>
                         </Grid>
                         <Grid item>
                             <Paper elevation={1}>
