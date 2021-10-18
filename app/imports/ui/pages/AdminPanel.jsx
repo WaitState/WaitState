@@ -9,7 +9,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Table, Button
+  Table, Button, Box
 } from "@mui/material";
 
 //style the outer container
@@ -35,10 +35,7 @@ const AdminTable = styled(Table)({
 
 //Style the Header of the table
 //Change tablehead to Header
-const Header = styled(TableHead)({
-
-
-});
+const Header = styled(TableHead)({});
 
 //For header and even Rows
 const RowEven = styled(TableRow)({
@@ -47,7 +44,6 @@ const RowEven = styled(TableRow)({
   borderStyle: "Solid",
   borderRight: "Solid",
   borderLeft: "Solid",
-
 
 });
 
@@ -82,8 +78,16 @@ const PageHeader = styled(Typography)({
 
 });
 
-const AddPatient = styled(Button)({
-  textAlign: 'left',
+const RightBox = styled(Box)({
+
+  display: 'flex',
+  flexDirection: "Row",
+  textAlign: "Right",
+  justifyContent: 'flex-end',
+  alignItems: 'flex-end',
+  alignmentBaseline: "right",
+
+
 
 });
 
@@ -93,11 +97,11 @@ const AdminPanel = (props) => {
       <AdminContainer>
 
         <PageHeader> Administrator Panel</PageHeader>
-        <AddPatient> Add a Patient</AddPatient>
+        <RightBox component = "span">
+          <Button > Add a Patient</Button>
+        </RightBox>
         <AdminTable>
-
           <Header>
-
             <RowEven>
               <CellHeader>ID </CellHeader>
               <CellHeader>Patient Name </CellHeader>
@@ -124,7 +128,7 @@ const AdminPanel = (props) => {
             </RowOdd>
 
             <RowEven /*Loop through the patient records and display them */>
-              <CellRow  >test id</CellRow>
+              <CellRow>test id</CellRow>
               <CellRow /*patient.name */>test name</CellRow>
               <CellRow>test reason</CellRow>
               <CellRow>test created</CellRow>
