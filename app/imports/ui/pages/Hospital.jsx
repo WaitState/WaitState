@@ -2,7 +2,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
 import { styled } from "@mui/system";
-import { Button, Input, Typography, Paper} from "@mui/material";
+import {
+  Button,
+  Input,
+  Typography,
+  Paper,
+  CircularProgress,
+  Backdrop,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import { Hospitals } from "../../api/hospital/Hospital";
@@ -19,32 +26,38 @@ const Container = styled(Paper)({
 });
 
 const HospitalPage = (props) => {
-  const props = useParams();
-  const hospital = Hospitals.findOne({facilityID: props.hid}).fetch();
   const { ready } = props;
-
+  const params = useParams();
+  console.log(params.hid);
+  const hospital = Hospitals.find({ facilityID: params.hid }).fetch();
   return (
     <Container>
-       <Typography variant="h3"> Hospital
-       </Typography>
-       <Typography> City
-       </Typography>
-       <Typography> State
-       </Typography>
-       <Typography> ZipCode
-       </Typography>
-       <Typography> County
-       </Typography>
+      {ready ? (
+        <div>
+          <Typography variant="h3">{hospital[0].facilityName}</Typography>
+          <Typography>{hospital[0].city}</Typography>
+          <Typography>{hospital[0].state}</Typography>
+          <Typography>{hospital[0].zipCode}</Typography>
+          <Typography>{hospital[0].county}</Typography>
+        </div>
+      ) : (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
     </Container>
   );
-}
+};
 
 HospitalPage.propTypes = {
   ready: PropTypes.bool.isRequired,
-}
+};
 
 const HospitalPageContainer = withTracker(() => {
-  const subscription = Meteor.subscribe('Hospital');
+  const subscription = Meteor.subscribe("Hospital");
 
   return {
     ready: subscription.ready(),
