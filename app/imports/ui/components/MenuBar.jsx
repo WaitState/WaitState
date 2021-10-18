@@ -1,20 +1,10 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Menu from "@mui/material/Menu";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import MenuItem from "@mui/material/MenuItem";
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { AppBar, Box, Toolbar, Menu, Drawer, List, ListItem, ListItemText, MenuItem, InputBase, IconButton } from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
 
 const SearchBox = styled("div")(({ theme }) => ({
@@ -76,7 +66,7 @@ const MenuBar = (props) => {
   };
 
   const drawerId = "drawerMenu";
-  const renderDrawer= (
+  const renderDrawer = (
     <Drawer
       id={drawerId}
       anchor="left"
