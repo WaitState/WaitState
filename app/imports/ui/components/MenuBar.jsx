@@ -4,8 +4,10 @@ import { styled, alpha } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { AppBar, Box, Toolbar, Menu, Drawer, List, ListItem, ListItemText, MenuItem, InputBase, IconButton } from "@mui/material";
+import { AppBar, Box, Toolbar, Menu, Drawer, List, ListItem, ListItemText, MenuItem, InputBase, IconButton, Autocomplete, TextField } from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { withTracker } from 'meteor/react-meteor-data'
 
 const SearchBox = styled("div")(({ theme }) => ({
   position: "relative",
@@ -29,8 +31,9 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styled(Autocomplete)(({ theme }) => ({
   color: "inherit",
+  fontcolor: "white",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -48,6 +51,8 @@ const MenuBar = (props) => {
   const [drawerAnchorEl, setDrawerAnchorEl] = React.useState(null);
   const isDrawerOpen = Boolean(drawerAnchorEl);
   const isProfileMenuOpen = Boolean(anchorEl);
+  const { ready } = props;
+  var options = ["Hello", "test"];
 
   const openDrawer = (event) => {
     setDrawerAnchorEl(event.currentTarget);
@@ -127,12 +132,10 @@ const MenuBar = (props) => {
           </IconButton>
           {renderDrawer}
           <SearchBox>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search hospitals"
-              inputProps={{ "aria-label": "search" }}
+              disablePortal
+              options={options}
+              renderInput={(params) => <TextField {...params} label="Search hospitals by ..." />}
             />
           </SearchBox>
           <IconButton
@@ -152,4 +155,15 @@ const MenuBar = (props) => {
   );
 };
 
-export default MenuBar;
+MenuBar.propTypes = {
+  ready: PropTypes.bool.isRequired,
+}
+
+const MenuBarContainer = withTracker(() => {
+    const subscription = Meteor.subscribe('Hospital');
+    return {
+        ready: subscription.ready(),
+    }
+})(MenuBar);
+
+export default MenuBarContainer;
