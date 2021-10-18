@@ -9,7 +9,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Table, Button, Box
+  Table, Button, Box, Input, TextField
 } from "@mui/material";
 import { Patients } from '../../api/patient/Patient';
 import swal from 'sweetalert';
@@ -95,8 +95,8 @@ const AdminPanel = (props) => {
   const [reason, setReason] = React.useState("");
   const [checkInStatus, setCheckInStatus] = React.useState("");
   const [checkInTime, setCheckInTime] = React.useState("");
+  const [checkOutTime, setCheckOutTime] = React.useState("");
   const [checkInUserID, setCheckInUserID] = React.useState("");
-
 
   const handleSubmit = event => {
     //submit into the correction collection
@@ -110,9 +110,10 @@ const AdminPanel = (props) => {
           reason,
           checkInStatus,
           checkInTime,
+          checkOutTime,
           checkInUserID,
 
-        },(error) => {
+        }, (error) => {
           if (error) {
             swal("Error", "Missing required fields", "error").then(function () {
 
@@ -131,11 +132,9 @@ const AdminPanel = (props) => {
 
   };
 
-
   return (
 
       <AdminContainer>
-
         <PageHeader> Administrator Panel</PageHeader>
         <PanelHeader>List of Current Patients </PanelHeader>
         <AdminTable>
@@ -184,9 +183,16 @@ const AdminPanel = (props) => {
 
         <PanelHeader>Add a New Patient</PanelHeader>
         <form onSubmit={handleSubmit}>
-
+          <TextField
+              id="patientID"
+          label = "patientID"
+          type = "patientID"
+              placeholder="XX1234"
+              onChange={(e)=> setPatientId(e.target.value)}
+          > </TextField>
         </form>
       </AdminContainer>
+
   );
 
 };
