@@ -104,7 +104,7 @@ const Directory = (props) => {
                                 ))}
                             </Menu>
 
-                            <Button type="submit">Submit</Button>
+                            <Button variant="contained" type="submit">Submit</Button>
                         </Grid>
                         <Grid item>
                             <Paper elevation={1}>

@@ -67,7 +67,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
               </ListItem>
           ))}
           <ListItem button component={Link} onClick={handleClose} to="/directory" key="more">
-            <ListItemText primary="See full directory" />
+            <ListItemText sx={{color:"blue"}} primary="See full directory" />
           </ListItem>
         </List>
       </Dialog>
@@ -107,7 +107,7 @@ const MenuBar = (props) => {
 
   const handleSearch = () => {
     console.log(searchValue);
-    setData(Hospitals.find({facilityName: {$regex: searchValue, $options: 'i'}}, {limit: 1}).fetch());
+    setData(Hospitals.find({facilityName: {$regex: searchValue, $options: 'i'}}, {limit: 15}).fetch());
     setOpenDialog(true);
   }
 
