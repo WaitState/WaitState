@@ -28,8 +28,10 @@ const Container = styled(Paper)({
 const HospitalPage = (props) => {
   const { ready } = props;
   const params = useParams();
-  console.log(params.hid);
-  const hospital = Hospitals.find({ facilityID: params.hid }).fetch();
+  var hospital = [] 
+  if (hospital.length === 0) {
+    hospital = Hospitals.find({ facilityID: params.hid }).fetch();
+  }
   return (
     <Container>
       {ready ? (
