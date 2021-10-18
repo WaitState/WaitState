@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { styled } from "@mui/system";
 import { Button, Input, Typography } from "@mui/material";
 
-const Container = styled('div')({
+const Container = styled("div")({
   display: "flex",
   flexDirection: "column",
   margin: "150px auto",
@@ -20,7 +20,6 @@ const MyInput = styled(Input)({
 });
 
 export default AdminLogin = ({ history }) => {
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -33,7 +32,8 @@ export default AdminLogin = ({ history }) => {
         console.log(err.reason);
         setError(err.reason);
       } else {
-        history.push("/");
+        // TODO: redirect to admin page
+        // history.push("/admin");
         console.log(Accounts.users);
       }
     });
@@ -46,7 +46,6 @@ export default AdminLogin = ({ history }) => {
       <form onSubmit={handleSubmit}>
         <MyInput
           fullWidth
-          
           id="email"
           name="email"
           placeholder="email"
@@ -54,7 +53,6 @@ export default AdminLogin = ({ history }) => {
         ></MyInput>
         <MyInput
           fullWidth
-          
           id="password"
           name="password"
           type="password"
