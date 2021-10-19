@@ -32,7 +32,7 @@ const Instructions = styled(List)({
   width: "calc(50vw)",
   alignItems: "center",
 });
-const Home = (props) => {
+const Home = ({ history }) => {
   return (
     <MyContainer>
       <Typography variant="h2">WaitState</Typography>
@@ -43,10 +43,7 @@ const Home = (props) => {
         >
           Search Nearby Hospital
         </MyButton>
-        <MyButton
-          variant="contained"
-          // onClick={(e) => history.push("/ticket")}
-        >
+        <MyButton variant="contained" onClick={(e) => history.push("/login")}>
           Check your Wait Time
         </MyButton>
       </Container>
