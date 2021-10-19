@@ -32,7 +32,9 @@ const Instructions = styled(List)({
   width: "calc(50vw)",
   alignItems: "center",
 });
-const Home = ({history}) => {
+
+const Home = ({ history }) => {
+
   return (
     <MyContainer>
       <Typography variant="h2">WaitState</Typography>
@@ -43,10 +45,8 @@ const Home = ({history}) => {
         >
           Search Nearby Hospital
         </MyButton>
-        <MyButton
-          variant="contained"
-          onClick={(e) => history.push("/login")}
-        >
+
+        <MyButton variant="contained" onClick={(e) => history.push("/login")}>
           Check your Wait Time
         </MyButton>
       </Container>
@@ -68,6 +68,7 @@ const Home = ({history}) => {
       </Instructions>
     </MyContainer>
   );
+
 };
 
 export default Home;
