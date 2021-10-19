@@ -11,9 +11,11 @@ const PatientSchema = new SimpleSchema({
   reason: String,
   checkInStatus: Boolean,
   checkInTime: String,
-  checkInUserID: String,
+  adminID: String,
 }, { tracker: Tracker });
+
+const grabPatient = schema.pick("patientID");
 
 Patients.attachSchema(PatientSchema);
 
-export { Patients, PatientSchema };
+export { Patients, PatientSchema, grabPatient };
