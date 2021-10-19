@@ -30,10 +30,11 @@ export default AdminLogin = ({ history }) => {
     Meteor.loginWithPassword(email, password, (err) => {
       if (err) {
         console.log(err.reason);
+        // pops up if incorrect passsword or user not found
         setError(err.reason);
       } else {
         // TODO: redirect to admin page
-        // history.push("/admin");
+        history.push("/");
         console.log(Accounts.users);
       }
     });
