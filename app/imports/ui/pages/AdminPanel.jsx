@@ -60,7 +60,7 @@ const RowOdd = styled(TableRow)({
 
 //Stylize the Cells in the header
 const CellHeader = styled(TableCell)({
-
+  borderTop: "Solid",
   borderLeft: "Solid",
   borderRight: "Solid",
   borderBottom: "Solid",
@@ -87,6 +87,13 @@ const PanelHeader = styled(Typography)({
 
 });
 
+const SubmitPatientButton = styled(Button)({
+  background: "#03B591",
+  margin: "10px",
+  fontSize: "17px",
+
+});
+
 const AdminPanel = (props) => {
 
   const [patientId, setPatientId] = React.useState("");
@@ -97,6 +104,7 @@ const AdminPanel = (props) => {
   const [checkInTime, setCheckInTime] = React.useState("");
   const [checkOutTime, setCheckOutTime] = React.useState("");
   const [checkInUserID, setCheckInUserID] = React.useState("");
+  //Set Check in User ID OR Patient ID should be created by us to be random
 
   const handleSubmit = event => {
     //submit into the correction collection
@@ -136,12 +144,124 @@ const AdminPanel = (props) => {
 
       <AdminContainer>
         <PageHeader> Administrator Panel</PageHeader>
+
+        <PanelHeader>Check In a New Patient</PanelHeader>
+        <form onSubmit={handleSubmit}>
+        <AdminTable>
+          <Header>
+            <RowEven>
+              <CellHeader>
+                Patient ID
+                <TextField
+                    id="patientID"
+                    label="patientID"
+                    type="patientID"
+                    placeholder="XX1234"
+                    onChange={(e) => setPatientId(e.target.value)}
+                > </TextField>
+              </CellHeader>
+              <CellHeader>
+                  First Name
+                <TextField
+                    id="patient first Name"
+                    label="patient first Name"
+                    type="Patient first Name"
+                    placeholder="Bob"
+                    onChange={(e) => setFirstName(e.target.value)}
+                > </TextField>
+              </CellHeader>
+              <CellHeader>Last Name
+
+                <TextField
+                    id="patient last  Name"
+                    label="patient last Name"
+                    type="Patient last Name"
+                    placeholder="Smith"
+                    onChange={(e) => setLastName(e.target.value)}
+                > </TextField></CellHeader>
+
+              <CellHeader>Reason
+                <TextField
+                    id="reason"
+                    label="reason"
+                    type="reason"
+                    placeholder="hurt foot"
+                    onChange={(e) => setReason(e.target.value)}
+                > </TextField>
+              </CellHeader>
+              <CellHeader>Check In Status
+                <TextField
+                    id="date"
+                    label=""
+                    type="date"
+                    placeholder=""
+                    onChange={(e) => setCheckInTime(e.target.value)}
+                > </TextField>
+              </CellHeader>
+              <CellHeader>Check-In Status
+                <TextField
+                    id="checked in"
+                    label="checked in"
+                    type="boolean"
+                    placeholder="false"
+                    onChange={(e) => setCheckInStatus(e.target.value)}
+                > </TextField>
+              </CellHeader>
+              <CellHeader>Check-In Time
+                <TextField
+                    id="check in time"
+                    label="check in time"
+                    type="check in time"
+                    placeholder="9:00 AM"
+                    onChange={(e) => setCheckInTime(e.target.value)}
+                > </TextField>
+              </CellHeader>
+              <CellHeader>Checked-Out
+                <TextField
+                    id="checked Out"
+                    label="checked out"
+                    type="checked out"
+                    placeholder=""
+                    onChange={(e) => setCheckOutTime(e.target.value)}
+                > </TextField>
+              </CellHeader>
+            </RowEven>
+          </Header>
+        </AdminTable>
+        <SubmitPatientButton
+        type="submit"
+        variant= "contained"
+        >
+          Add New Patient
+        </SubmitPatientButton>
+        </form>
+
+        <PanelHeader>Change Weighted Wait Time</PanelHeader>
+
+        <AdminTable>
+          <Header>
+            <RowEven>
+              <CellHeader>Current Time</CellHeader>
+              <CellHeader>Change To</CellHeader>
+              <CellHeader> </CellHeader>
+            </RowEven>
+          </Header>
+          <TableBody>
+            <RowOdd>
+              <CellRow /*Display Current Time */> </CellRow>
+              <CellRow /*Change Time TO*/> </CellRow>
+              <CellRow /*Submit The Changes*/>Submit</CellRow>
+            </RowOdd>
+          </TableBody>
+        </AdminTable>
+
         <PanelHeader>List of Current Patients </PanelHeader>
         <AdminTable>
           <Header>
             <RowEven>
               <CellHeader>ID </CellHeader>
-              <CellHeader>Patient Name </CellHeader>
+              <CellHeader>Patient First Name </CellHeader>
+              <CellHeader>Patient Last Name </CellHeader>
               <CellHeader>Reason </CellHeader>
               <CellHeader>Created At</CellHeader>
               <CellHeader>Check-In Status</CellHeader>
@@ -155,7 +275,8 @@ const AdminPanel = (props) => {
 
             <RowOdd /*Loop through the patient records and display them */>
               <CellRow>test id</CellRow>
-              <CellRow>test name</CellRow>
+              <CellRow>test first name</CellRow>
+              <CellRow>test last name</CellRow>
               <CellRow>test reason</CellRow>
               <CellRow>test created</CellRow>
               <CellRow>test status</CellRow>
@@ -168,7 +289,8 @@ const AdminPanel = (props) => {
 
             <RowEven /*Loop through the patient records and display them */>
               <CellRow>test id</CellRow>
-              <CellRow /*patient.name */>test name</CellRow>
+              <CellRow /*patient.name */>test first name</CellRow>
+              <CellRow /*patient.name */>test last name</CellRow>
               <CellRow>test reason</CellRow>
               <CellRow>test created</CellRow>
               <CellRow>test status</CellRow>
@@ -181,16 +303,7 @@ const AdminPanel = (props) => {
           </TableBody>
         </AdminTable>
 
-        <PanelHeader>Add a New Patient</PanelHeader>
-        <form onSubmit={handleSubmit}>
-          <TextField
-              id="patientID"
-          label = "patientID"
-          type = "patientID"
-              placeholder="XX1234"
-              onChange={(e)=> setPatientId(e.target.value)}
-          > </TextField>
-        </form>
+
       </AdminContainer>
 
   );
