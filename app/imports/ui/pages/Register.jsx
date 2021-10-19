@@ -62,7 +62,7 @@ const Register = (props) => {
       lastname,
       email,
       password,
-      roles[0],
+      roles,
       hospital,
       (err) => {
           if (err) {
