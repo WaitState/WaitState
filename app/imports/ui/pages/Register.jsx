@@ -13,28 +13,30 @@ import {
   TextField,
   Autocomplete,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/system";
 import { Hospitals } from "../../api/hospital/Hospital";
 
-const useStyles = makeStyles({
-  container: {
+const Container = styled("div")({
     display: "flex",
     flexDirection: "column",
     margin: "150px auto",
     textAlign: "center",
     alignItems: "center",
     width: "35%",
-  },
-  input: {
+  });
+  
+const Error = styled("span")({
+    color: "red",
+    marginBottom: "10px",
+});
+
+  const MyInput = styled(Input)({
     width: "100%",
     height: "50px",
     margin: "15px 0",
-  },
-});
+  });
 
 const Register = (props) => {
-  const classes = useStyles();
-
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -58,16 +60,23 @@ const Register = (props) => {
       email,
       password,
       roles[0],
-      hospital
+      hospital,
+      (err) => {
+          if (err) {
+            setError(err.reason);
+          }
+          else{
+            history.push("/admin/login"); 
+          }
+      }
     );
-    history.push("/admin/login");
   };
 
   return (
-    <div className={classes.container}>
+    <Container>
       <Typography variant="h3">Register</Typography>
       <br />
-      {error && <span className={classes.error}>{error}</span>}
+      {error && <Error>{error}</Error>}
       <form onSubmit={handleSubmit}>
         <Autocomplete
           id="grouped-demo"
@@ -81,39 +90,35 @@ const Register = (props) => {
             <TextField {...params} label="Choose a Hospital" />
           )}
         />
-        <Input
+        <MyInput
           fullWidth
-          className={classes.input}
           id="firstname"
           name="firstname"
           placeholder="First Name"
           onChange={(e) => setFirstname(e.target.value)}
-        ></Input>
-        <Input
+        ></MyInput>
+        <MyInput
           fullWidth
-          className={classes.input}
           id="lastname"
           name="lastname"
           placeholder="Last Name"
           onChange={(e) => setLastname(e.target.value)}
-        ></Input>
-        <Input
+        ></MyInput>
+        <MyInput
           fullWidth
-          className={classes.input}
           id="email"
           name="email"
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
-        ></Input>
-        <Input
+        ></MyInput>
+        <MyInput
           fullWidth
-          className={classes.input}
           id="password"
           name="password"
           type="password"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
-        ></Input>
+        ></MyInput>
         <Button variant="contained" type="submit">
           {" "}
           Register
@@ -123,7 +128,7 @@ const Register = (props) => {
       <Button variant="contained" onClick={(e) => history.push("/admin/login")}>
         Log in
       </Button>
-    </div>
+    </Container>
   );
 };
 
