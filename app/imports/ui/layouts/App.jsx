@@ -12,6 +12,9 @@ import Home from "../pages/Home";
 import MenuBar from "../components/MenuBar";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
+
+
+import AdminPanel from "../pages/AdminPanel";
 import AdminLogin from "../pages/AdminLogin";
 import PatientLogin from "../pages/PatientLogin";
 import Directory from "../pages/Directory";
@@ -30,8 +33,12 @@ const App = (props) => {
           <Route path="/directory/" component={Directory} />
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/login" component={PatientLogin} />
+
+          <Route exact path="/adminpanel" component={AdminPanel}/>
+
           <Route path="/ticket" component={Ticket} />
           <Route path="/hospital/:hid" component={Hospital} />
+
 
           {/* <Route path="/signout" component={Signout}/> */}
           {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}
@@ -70,6 +77,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
  * @param {any} { component: Component, ...rest }
  */
 const AdminProtectedRoute = ({ component: Component, ...rest }) => (
+
   <Route
     {...rest}
     render={(props) => {
@@ -84,6 +92,7 @@ const AdminProtectedRoute = ({ component: Component, ...rest }) => (
       );
     }}
   />
+
 );
 
 // Require a component and location to be passed to each ProtectedRoute.

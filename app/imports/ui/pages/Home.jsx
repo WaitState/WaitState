@@ -65,6 +65,7 @@ const Home = ({ history }) => {
       </Instructions>
     </MyContainer>
   );
+
 };
 
 export default Home;
