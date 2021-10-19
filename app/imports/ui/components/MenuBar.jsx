@@ -24,6 +24,10 @@ import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import { Hospitals } from "../../api/hospital/Hospital";
 
+const MyAppBar = styled(AppBar)({
+    backgroundColor: "#0a9396",
+});
+
 const SearchBox = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -219,7 +223,7 @@ const MenuBar = (props) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <MyAppBar position="static">
         <Toolbar>
           <IconButton
             size="large"
@@ -256,7 +260,7 @@ const MenuBar = (props) => {
             <AccountCircle />
           </IconButton>
         </Toolbar>
-      </AppBar>
+      </MyAppBar>
       {renderProfileMenu}
       <SearchDialog data={data} open={openDialog} onClose={closeDialog} />
     </Box>
