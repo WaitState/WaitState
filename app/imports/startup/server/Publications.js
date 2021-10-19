@@ -28,9 +28,7 @@ Meteor.publish(null, function () {
 
 //Publish a role for each hospital
 Meteor.publish('Hospital', function publish() {
-  // { userId: this.userId}
-  if (this.userId) {
+
     return Hospitals.find()
-  }
-  return this.ready();
+
 });
