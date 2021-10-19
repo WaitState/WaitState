@@ -167,7 +167,7 @@ const MenuBar = (props) => {
         <List>
           {[
             ["WaitState", "/"],
-            ["Hospital Directory", "/directory/"],
+            ["Hospital Directory", "/directory"],
           ].map((text, index) => (
             <ListItem button component={Link} to={text[1]} key={text[0]}>
               <ListItemText primary={text[0]} />
@@ -175,13 +175,16 @@ const MenuBar = (props) => {
           ))}
           <Divider />
           {/* Admin Menu Options */}
-          {isSiteAdmin == true && (
+          {isSiteAdmin ? (
             <div>
-              <ListItem button component={Link} to="/register">
+              <ListItem button component={Link} to="/addadmin">
                 <ListItemText primary={"Add Admin"} />
               </ListItem>
             </div>
-          )}
+          ): (null)}
+              <ListItem button component={Link} to="/adminpanel">
+                <ListItemText primary="Admin Panel" />
+              </ListItem>
         </List>
       </Box>
     </Drawer>
