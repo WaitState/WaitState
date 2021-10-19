@@ -20,12 +20,19 @@ const MyInput = styled(Input)({
     margin: "15px 0",
 });
 
+const patientID = "ABC12345";
+
 export default PatientLogin = ({ history }) => {
   const [uniqueID, setuniqueID] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // check if the patient ID exist
+    if (uniqueID == patientID){
+      history.push("/ticket");
+    }
+    
     
     // TODO: Add patient login handler
   };

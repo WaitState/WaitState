@@ -16,6 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Link, withRouter } from "react-router-dom";
+import { Register } from "../pages/Register";
 
 const SearchBox = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,6 +59,10 @@ const MenuBar = (props) => {
   const [drawerAnchorEl, setDrawerAnchorEl] = React.useState(null);
   const isDrawerOpen = Boolean(drawerAnchorEl);
   const isProfileMenuOpen = Boolean(anchorEl);
+  const isAdmin =
+    Roles.userIsInRole(Meteor.userId(), "admin") ||
+    Roles.userIsInRole(Meteor.userId(), "Hospital Admin") ||
+    Roles.userIsInRole(Meteor.userId(), "Site Admin");
 
   const openDrawer = (event) => {
     setDrawerAnchorEl(event.currentTarget);
@@ -97,6 +102,13 @@ const MenuBar = (props) => {
               <ListItemText primary={text[0]} />
             </ListItem>
           ))}
+          
+          {/* Admin Menu Options */}
+          {isAdmin == true && (
+            <ListItem button component={Link} to="/register">
+              <ListItemText primary={"Add Admin"} />
+            </ListItem>
+          )}
         </List>
       </Box>
     </Drawer>
@@ -119,14 +131,21 @@ const MenuBar = (props) => {
       open={isProfileMenuOpen}
       onClose={handleClose}
     >
-      {Meteor.user() === "" ? (
+      {/* check if user is logged in */}
+      {Meteor.userId() === null ? ( 
         <div>
-          <MenuItem component={Link} to="/admin/login" onClick={handleClose}>Login</MenuItem>
-          <MenuItem component={Link} to="/register" onClick={handleClose}>Signup</MenuItem>
+          <MenuItem component={Link} to="/admin/login" onClick={handleClose}>
+            Admin Login
+          </MenuItem>
+          <MenuItem component={Link} to="/login" onClick={handleClose}>
+            Patient Login
+          </MenuItem>
         </div>
       ) : (
         <div>
-        <MenuItem component={Link} to="/admin/login" onClick={handleLogout}>Logout</MenuItem>
+          <MenuItem component={Link} to="/" onClick={handleLogout}>
+            Logout
+          </MenuItem>
         </div>
       )}
     </Menu>

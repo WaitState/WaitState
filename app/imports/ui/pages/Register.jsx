@@ -48,7 +48,7 @@ const Register = (props) => {
 
   //remove duplicated element from hospital array
   arrayOfHospitals = arrayOfHospitals.filter((v, i, a) => a.indexOf(v) === i);
-//   console.log(inputValue);
+  //console.log(inputValue);
   const handleSubmit = (e) => {
     e.preventDefault();
     Meteor.call(
