@@ -1,7 +1,7 @@
 {
   "defaultAccounts": [
-    { "email": "admin@foo.com", "password": "changeme", "role": "admin" },
-    { "email": "john@foo.com", "password": "changeme" }
+    { "email": "admin_hospital@gmail.com", "password": "admin", "role": "Hospital Admin" },
+    { "email": "admin_site@gmail.com", "password": "admin", "role": "Site Admin"  }
   ],
 
   "defaultData": [
