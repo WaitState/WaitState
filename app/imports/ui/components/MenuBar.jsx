@@ -24,7 +24,7 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import { Hospitals } from "../../api/hospital/Hospital";
-
+import SearchDialog  from "../components/SearchDialog";
 const MyAppBar = styled(AppBar)({
   backgroundColor: "#0a9396",
 });
@@ -64,49 +64,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
-function SearchDialog(props) {
-  const { data, onClose, selectedValue, open } = props;
-  const handleClose = () => {
-    onClose();
-  };
-
-  const handleListItemClick = () => {
-    onClose();
-  };
-
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Hospitals</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {data.map((hospital) => (
-          <ListItem
-            button
-            onClick={() => handleListItemClick(data)}
-            key={hospital.facilityName}
-          >
-            <ListItemText primary={hospital.facilityName} />
-          </ListItem>
-        ))}
-        <ListItem
-          button
-          component={Link}
-          onClick={handleClose}
-          to="/directory"
-          key="more"
-        >
-          <ListItemText sx={{ color: "blue" }} primary="See full directory" />
-        </ListItem>
-      </List>
-    </Dialog>
-  );
-}
-
-SearchDialog.propTypes = {
-  data: PropTypes.array,
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
 
 const MenuBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
