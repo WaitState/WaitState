@@ -120,6 +120,10 @@ const MenuBar = (props) => {
     Roles.userIsInRole(Meteor.userId(), "admin") ||
     Roles.userIsInRole(Meteor.userId(), "Site Admin");
 
+  const isHospitalAdmin =
+    Roles.userIsInRole(Meteor.userId(), "admin") ||
+    Roles.userIsInRole(Meteor.userId(), "Hospital Admin");
+  
   const openDrawer = (event) => {
     setDrawerAnchorEl(event.currentTarget);
   };
@@ -181,10 +185,14 @@ const MenuBar = (props) => {
                 <ListItemText primary={"Add Admin"} />
               </ListItem>
             </div>
-          ): (null)}
-              <ListItem button component={Link} to="/adminpanel">
-                <ListItemText primary="Admin Panel" />
-              </ListItem>
+          ) : null}
+          {isHospitalAdmin ? (
+            <div>
+            <ListItem button component={Link} to="/adminpanel">
+              <ListItemText primary="Admin Panel" />
+            </ListItem>
+            </div>
+          ) : null}
         </List>
       </Box>
     </Drawer>
