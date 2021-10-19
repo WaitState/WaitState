@@ -18,14 +18,15 @@ import {
   IconButton,
   Dialog,
   DialogTitle,
+  Divider,
 } from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import { Hospitals } from "../../api/hospital/Hospital";
-
+import  SearchDialog  from "../components/SearchDialog";
 const MyAppBar = styled(AppBar)({
-    backgroundColor: "#0a9396",
+  backgroundColor: "#0a9396",
 });
 
 const SearchBox = styled("div")(({ theme }) => ({
@@ -63,7 +64,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
+/*
 function SearchDialog(props) {
   const { data, onClose, selectedValue, open } = props;
   const handleClose = () => {
@@ -106,7 +107,7 @@ SearchDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };
-
+*/
 const MenuBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [drawerAnchorEl, setDrawerAnchorEl] = React.useState(null);
@@ -115,11 +116,14 @@ const MenuBar = (props) => {
   const [openDialog, setOpenDialog] = React.useState(false);
   const isDrawerOpen = Boolean(drawerAnchorEl);
   const isProfileMenuOpen = Boolean(anchorEl);
-  const isAdmin =
+  const isSiteAdmin =
     Roles.userIsInRole(Meteor.userId(), "admin") ||
-    Roles.userIsInRole(Meteor.userId(), "Hospital Admin") ||
     Roles.userIsInRole(Meteor.userId(), "Site Admin");
 
+  const isHospitalAdmin =
+    Roles.userIsInRole(Meteor.userId(), "admin") ||
+    Roles.userIsInRole(Meteor.userId(), "Hospital Admin");
+  
   const openDrawer = (event) => {
     setDrawerAnchorEl(event.currentTarget);
   };
@@ -167,18 +171,28 @@ const MenuBar = (props) => {
         <List>
           {[
             ["WaitState", "/"],
-            ["Hospital Directory", "/directory/"],
+            ["Hospital Directory", "/directory"],
           ].map((text, index) => (
             <ListItem button component={Link} to={text[1]} key={text[0]}>
               <ListItemText primary={text[0]} />
             </ListItem>
           ))}
+          <Divider />
           {/* Admin Menu Options */}
-          {isAdmin == true && (
-            <ListItem button component={Link} to="/register">
-              <ListItemText primary={"Add Admin"} />
+          {isSiteAdmin ? (
+            <div>
+              <ListItem button component={Link} to="/addadmin">
+                <ListItemText primary={"Add Admin"} />
+              </ListItem>
+            </div>
+          ) : null}
+          {isHospitalAdmin ? (
+            <div>
+            <ListItem button component={Link} to="/adminpanel">
+              <ListItemText primary="Admin Panel" />
             </ListItem>
-          )}
+            </div>
+          ) : null}
         </List>
       </Box>
     </Drawer>
@@ -278,4 +292,4 @@ const MenuBarContainer = withTracker(() => {
     ready: subscription.ready(),
   };
 })(MenuBar);
-export default MenuBarContainer;
+export default withRouter(MenuBarContainer);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
@@ -29,13 +29,11 @@ const App = (props) => {
         <MenuBar />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/register" component={Register} />
+          <AdminProtectedRoute path="/addadmin" component={Register} />
           <Route path="/directory/" component={Directory} />
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/login" component={PatientLogin} />
-
-          <Route exact path="/adminpanel" component={AdminPanel}/>
-
+          <HospitalAdminProtectedRoute path="/adminpanel" component={AdminPanel}/>
           <Route path="/ticket" component={Ticket} />
           <Route path="/hospital/:hid" component={Hospital} />
 
@@ -82,7 +80,7 @@ const AdminProtectedRoute = ({ component: Component, ...rest }) => (
     {...rest}
     render={(props) => {
       const isLogged = Meteor.userId() !== null;
-      const isAdmin = Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "Hospital Admin")  || Roles.userIsInRole(Meteor.userId(), "Site Admin");
+      const isAdmin = Roles.userIsInRole(Meteor.userId(), "admin") || Roles.userIsInRole(Meteor.userId(), "Site Admin");
       return isLogged && isAdmin ? (
         <Component {...props} />
       ) : (
@@ -92,8 +90,29 @@ const AdminProtectedRoute = ({ component: Component, ...rest }) => (
       );
     }}
   />
-
 );
+
+const HospitalAdminProtectedRoute = ({ component: Component, ...rest }) => (
+
+  <Route
+    {...rest}
+    render={(props) => {
+      const isLogged = Meteor.userId() !== null;
+      const isAdmin = Roles.userIsInRole(Meteor.userId(), "Hospital Admin");
+      return isLogged && isAdmin ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{ pathname: "/admin/login", state: { from: props.location } }}
+        />
+      );
+    }}
+  />
+);
+HospitalAdminProtectedRoute.propTypes = {
+  component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+  location: PropTypes.object,
+}
 
 // Require a component and location to be passed to each ProtectedRoute.
 ProtectedRoute.propTypes = {
