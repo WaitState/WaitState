@@ -19,10 +19,8 @@ const HospitalSchema = new SimpleSchema({
     type: String,
     defaultValue: "0",
   },
-  patientList: {
-    type: String,
-    defaultValue: "0",
-  }
+  patientList: { type: Array, },
+  'patientList.$': { type: String, },
 
 }, { tracker: Tracker });
 
