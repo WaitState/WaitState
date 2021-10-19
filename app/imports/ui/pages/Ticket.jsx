@@ -20,7 +20,7 @@ const MyContainer = styled(Container)({
   width: "60%",
 });
 const id = "ABC1234";
-const waitTime = 15;
+var waitTime = 15;
 const checkInTime = new Date();
 const reason = "knife cuts"
 
@@ -28,19 +28,23 @@ const reason = "knife cuts"
 // number patients at that hostipal
 
 const Ticket = (props) => {
+
   console.log("props: ", props);
+  const { hospital} = props;
+  var numbPatients = ""
+  var average = ""
 
-  const { curenntHospital} = props;
-  // const  { user } = props;
-  //
-  //
-  // var facilityID = ""
-  // user.map((result) => {
-  //   facilityID = result.facilityID;
-  // });
+  hospital.map((result) =>{
+    numbPatients = (result.patientList.length - 1);
+    average = result.averageWaitTime;
+  });
 
-  console.log("USer Id " ,  Meteor.userId())
-  //console.log("Facility " ,  facilityID)
+  //This is the value we need
+  //console.log("num of patients", numbPatients);
+  //console.log("wait time", average);
+
+  waitTime = (numbPatients * average);
+
   return (
 
     <MyContainer>
@@ -79,6 +83,7 @@ Ticket.propTypes = {
 const TicketContainer = withTracker(() => {
   const subscription = Meteor.subscribe("Hospital");
   return {
+    //Facility ID will need to be changed
     hospital: Hospitals.find({facilityID: "10001"}).fetch(),
     ready: subscription.ready(),
   };
