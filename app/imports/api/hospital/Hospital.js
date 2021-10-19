@@ -28,6 +28,7 @@ const HospitalSchema = new SimpleSchema({
   // Total Patients waiting in the queue
   totalPatients: {
     type: Number,
+    defaultValue: 0,
   },
 
 
