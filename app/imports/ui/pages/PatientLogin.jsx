@@ -19,6 +19,8 @@ const MyInput = styled(Input)({
   margin: "15px 0",
 });
 
+const patientID = "ABC12345";
+
 export default PatientLogin = ({ history }) => {
   const [uniqueID, setuniqueID] = useState("");
   const [error, setError] = useState("");
@@ -26,7 +28,6 @@ export default PatientLogin = ({ history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     Meteor.loginWithPassword(uniqueID, password, (err) => {
       if (err) {
         console.log(err.reason);
