@@ -26,7 +26,7 @@ Meteor.publish('Account', function publish() {
 // Publish a role for each patient
 Meteor.publish('Patient', function publish() {
   if (this.userId) {
-    return Patients.find({ userID:  this.userId });
+    return Patients.find();
   }
     return this.ready();
 });

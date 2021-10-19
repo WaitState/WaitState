@@ -11,9 +11,9 @@ import {
   Table, Button, Box, Input, TextField
 } from "@mui/material";
 import { Patients } from '../../api/patient/Patient';
-import { Hospitals } from '../../api/hospital/Hospital';
 import swal from 'sweetalert';
-import { Accounts } from 'meteor/accounts-base';
+import PropTypes from "prop-types";
+import { withTracker } from "meteor/react-meteor-data";
 
 //style the outer container
 const AdminContainer = styled(Container)({
@@ -99,25 +99,29 @@ const SubmitPatientButton = styled(Button)({
 const AdminPanel = (props) => {
 
   //Set chekInUserID OR patientID should be created by us to be random
-  const [patientId, setPatientId] = React.useState("");
+  const [patientID, setPatientID] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [reason, setReason] = React.useState("");
-  //Set chekInUserID OR patientID should be created by us to be random
 
+  const generateID = () => {
+    const tempID = Math.floor(Math.random() * 100000).toString();
+    const uniqueTest = Patients.find({ patientID: tempID }).fetch();
+    if (uniqueTest.length === 0) {
+      setPatientID(tempID);
+    };
+  }
 
   const handleSubmit = (event) => {
     //submit into the correction collection
     event.preventDefault();
     const adminUser = Meteor.users.find({ _id: Meteor.userId }, { limit: 1}).fetch();
-    console.log(adminUser);
     const adminID = adminUser[0]._id;
     const hospital = adminUser[0].profile.hospital;
-    const checkInTime = new Date();
-    console.log(checkInTime)
+    const checkInTime = new Date().toString();
     Patients.insert(
         {
-          patientId,
+          patientID,
           firstName,
           lastName,
           reason,
@@ -126,7 +130,7 @@ const AdminPanel = (props) => {
           hospital,
         }, (error) => {
           if (error) {
-            swal("Error", "Missing required fields", "error").then(function () {
+            swal("Error", error.message, "error").then(function () {
 
               window.location = "/#/adminpanel";
             });
@@ -154,14 +158,8 @@ const AdminPanel = (props) => {
           <Header>
             <RowEven>
               <CellHeader>
-                Patient ID
-                <TextField
-                    id="patientID"
-                    label="patientID"
-                    type="patientID"
-                    placeholder="XX1234"
-                    onChange={(e) => setPatientId(e.target.value)}
-                > </TextField>
+                Patient ID:
+                {patientID}
               </CellHeader>
               <CellHeader>
                   First Name
@@ -192,45 +190,12 @@ const AdminPanel = (props) => {
                     onChange={(e) => setReason(e.target.value)}
                 > </TextField>
               </CellHeader>
-              <CellHeader>Check In Status
-                <TextField
-                    id="date"
-                    label=""
-                    type="date"
-                    placeholder=""
-                    onChange={(e) => setCheckInTime(e.target.value)}
-                > </TextField>
-              </CellHeader>
-              <CellHeader>Check-In Status
-                <TextField
-                    id="checked in"
-                    label="checked in"
-                    type="boolean"
-                    placeholder="false"
-                    onChange={(e) => setCheckInStatus(e.target.value)}
-                > </TextField>
-              </CellHeader>
-              <CellHeader>Check-In Time
-                <TextField
-                    id="check in time"
-                    label="check in time"
-                    type="check in time"
-                    placeholder="9:00 AM"
-                    onChange={(e) => setCheckInTime(e.target.value)}
-                > </TextField>
-              </CellHeader>
-              <CellHeader>Checked-Out
-                <TextField
-                    id="checked Out"
-                    label="checked out"
-                    type="checked out"
-                    placeholder=""
-                    onChange={(e) => setCheckOutTime(e.target.value)}
-                > </TextField>
-              </CellHeader>
             </RowEven>
           </Header>
         </AdminTable>
+        <SubmitPatientButton variant="contained" onClick={generateID}>
+          Generate unique patientID
+        </SubmitPatientButton>
         <SubmitPatientButton
         type="submit"
         variant= "contained"
@@ -313,4 +278,16 @@ const AdminPanel = (props) => {
 
 };
 
-export default AdminPanel;
+AdminPanel.propTypes = {
+  ready: PropTypes.bool.isRequired,
+}
+
+const AdminPanelContainer = withTracker(() => {
+  const subscription = Meteor.subscribe("Patient");
+
+  return {
+    ready: subscription.ready(),
+  };
+})(AdminPanel);
+
+export default AdminPanelContainer;
