@@ -1,6 +1,5 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
-
 import { styled } from "@mui/system";
 import {
   Typography,
@@ -12,7 +11,9 @@ import {
   Table, Button, Box, Input, TextField
 } from "@mui/material";
 import { Patients } from '../../api/patient/Patient';
+import { Hospitals } from '../../api/hospital/Hospital';
 import swal from 'sweetalert';
+
 
 //style the outer container
 const AdminContainer = styled(Container)({
@@ -38,7 +39,7 @@ const AdminTable = styled(Table)({
 //Style the Header of the table
 const Header = styled(TableHead)({});
 
-//For header and even Rows
+//For header and even Rows to change the color
 const RowEven = styled(TableRow)({
 
   background: "#FFFFFF",
@@ -96,6 +97,7 @@ const SubmitPatientButton = styled(Button)({
 
 const AdminPanel = (props) => {
 
+  //Set chekInUserID OR patientID should be created by us to be random
   const [patientId, setPatientId] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -104,9 +106,10 @@ const AdminPanel = (props) => {
   const [checkInTime, setCheckInTime] = React.useState("");
   const [checkOutTime, setCheckOutTime] = React.useState("");
   const [checkInUserID, setCheckInUserID] = React.useState("");
-  //Set Check in User ID OR Patient ID should be created by us to be random
+  //Set chekInUserID OR patientID should be created by us to be random
 
-  const handleSubmit = event => {
+
+  const handleSubmit = (event) => {
     //submit into the correction collection
     event.preventDefault();
 
@@ -296,7 +299,7 @@ const AdminPanel = (props) => {
               <CellRow>test status</CellRow>
               <CellRow>test time</CellRow>
               <CellRow>test time out</CellRow>
-              <CellRow /*onClick={(e) => history.push("/patientPage")}} */>edit patient info</CellRow>
+              <CellRow /* Allow Admin to edit all the patient info here if clicked*/>edit patient info</CellRow>
 
 
             </RowEven>
