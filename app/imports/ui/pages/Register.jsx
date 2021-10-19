@@ -44,7 +44,7 @@ const Register = (props) => {
   const [hospitalName, setHospitalName] = useState("");
   const [error, setError] = useState("");
   const { ready, history } = props;
-  const roles = ["Hospital Admin", "Site Admin", "Temp User"];
+  const roles = "Hospital Admin"
   const hospitalDocument = Hospitals.find().fetch();
   var arrayOfHospitals = hospitalDocument.map((item) => item.facilityName);
 

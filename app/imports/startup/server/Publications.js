@@ -4,7 +4,6 @@ import { Patients } from '../../api/patient/Patient';
 import { Hospitals } from '../../api/hospital/Hospital';
 
 
-
 // User-level publication.
 // If logged in, then publish documents owned by this user. Otherwise publish nothing.
 
@@ -17,10 +16,17 @@ Meteor.publish(null, function () {
   return this.ready();
 });
 
+Meteor.publish('Account', function publish() {
+  if (Roles.userIsInRole(this.userId, 'Site Admin')) {
+    return Meteor.users.find({userId: this.userId});
+  }
+  return this.ready();
+})
+
 // Publish a role for each patient
 Meteor.publish('Patient', function publish() {
-  if (this.userID) {
-    return Patients.find({ userID:  this.userID });
+  if (this.userId) {
+    return Patients.find({ userID:  this.userId });
   }
     return this.ready();
 });

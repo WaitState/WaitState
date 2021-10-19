@@ -12,6 +12,7 @@ const PatientSchema = new SimpleSchema({
   status: String,
   checkInTime: String,
   adminID: String,
+  hospitalID: String,
 }, { tracker: Tracker });
 
 Patients.attachSchema(PatientSchema);

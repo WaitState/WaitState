@@ -13,7 +13,7 @@ import {
 import { Patients } from '../../api/patient/Patient';
 import { Hospitals } from '../../api/hospital/Hospital';
 import swal from 'sweetalert';
-
+import { Accounts } from 'meteor/accounts-base';
 
 //style the outer container
 const AdminContainer = styled(Container)({
@@ -103,28 +103,27 @@ const AdminPanel = (props) => {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [reason, setReason] = React.useState("");
-  const [checkInStatus, setCheckInStatus] = React.useState("");
-  const [checkInTime, setCheckInTime] = React.useState("");
-  const [checkOutTime, setCheckOutTime] = React.useState("");
-  const [checkInUserID, setCheckInUserID] = React.useState("");
   //Set chekInUserID OR patientID should be created by us to be random
 
 
   const handleSubmit = (event) => {
     //submit into the correction collection
     event.preventDefault();
-
+    const adminUser = Meteor.users.find({ _id: Meteor.userId }, { limit: 1}).fetch();
+    console.log(adminUser);
+    const adminID = adminUser[0]._id;
+    const hospital = adminUser[0].profile.hospital;
+    const checkInTime = new Date();
+    console.log(checkInTime)
     Patients.insert(
         {
           patientId,
           firstName,
           lastName,
           reason,
-          checkInStatus,
           checkInTime,
-          checkOutTime,
-          checkInUserID,
-
+          adminID,
+          hospital,
         }, (error) => {
           if (error) {
             swal("Error", "Missing required fields", "error").then(function () {
