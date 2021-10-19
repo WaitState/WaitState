@@ -160,14 +160,21 @@ const MenuBar = (props) => {
       open={isProfileMenuOpen}
       onClose={handleClose}
     >
-      {Meteor.user() === "" ? (
+      {/* check if user is logged in */}
+      {Meteor.userId() === null ? ( 
         <div>
-          <MenuItem component={Link} to="/admin/login" onClick={handleClose}>Login</MenuItem>
-          <MenuItem component={Link} to="/register" onClick={handleClose}>Signup</MenuItem>
+          <MenuItem component={Link} to="/admin/login" onClick={handleClose}>
+            Admin Login
+          </MenuItem>
+          <MenuItem component={Link} to="/login" onClick={handleClose}>
+            Patient Login
+          </MenuItem>
         </div>
       ) : (
         <div>
-        <MenuItem component={Link} to="/admin/login" onClick={handleLogout}>Logout</MenuItem>
+          <MenuItem component={Link} to="/" onClick={handleLogout}>
+            Logout
+          </MenuItem>
         </div>
       )}
     </Menu>
