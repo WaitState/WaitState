@@ -20,9 +20,18 @@ const HospitalSchema = new SimpleSchema({
     defaultValue: "0",
   },
   patientList: {
+    type: Array,
+  },
+  'patientList.$': {
     type: String,
-    defaultValue: "0",
-  }
+  },
+  // Total Patients waiting in the queue
+  totalPatients: {
+    type: Number,
+    defaultValue: 0,
+  },
+
+
 
 }, { tracker: Tracker });
 

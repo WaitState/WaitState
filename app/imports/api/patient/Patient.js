@@ -9,9 +9,9 @@ const PatientSchema = new SimpleSchema({
   firstName: String,
   lastName: String,
   reason: String,
-  checkInStatus: Boolean,
+  status: String,
   checkInTime: String,
-  checkInUserID: String,
+  adminID: String,
 }, { tracker: Tracker });
 
 Patients.attachSchema(PatientSchema);
