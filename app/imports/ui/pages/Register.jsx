@@ -41,7 +41,7 @@ const Register = (props) => {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [hospital, setHospital] = useState("");
+  const [hospitalName, setHospitalName] = useState("");
   const [error, setError] = useState("");
   const { ready, history } = props;
   const roles = ["Hospital Admin", "Site Admin", "Temp User"];
@@ -53,6 +53,9 @@ const Register = (props) => {
   //console.log(inputValue);
   const handleSubmit = (e) => {
     e.preventDefault();
+    const hospitalObject = Hospitals.find({ facilityName: hospitalName }, {limit: 1}).fetch();
+    const hospital = hospitalObject[0].facilityID;
+    console.log(hospital);
     Meteor.call(
       "createAccount",
       firstname,
@@ -81,9 +84,9 @@ const Register = (props) => {
         <Autocomplete
           id="grouped-demo"
           options={arrayOfHospitals}
-          inputValue={hospital}
+          inputValue={hospitalName}
           onInputChange={(event, newInputValue) => {
-            setHospital(newInputValue);
+            setHospitalName(newInputValue);
           }}
           sx={{ width: 500 }}
           renderInput={(params) => (
