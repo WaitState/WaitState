@@ -66,6 +66,7 @@ const CellHeader = styled(TableCell)({
   borderRight: "Solid",
   borderBottom: "Solid",
 
+  
 });
 
 //Stylize the cells NOt in the header
