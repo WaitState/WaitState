@@ -1,21 +1,14 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Menu from "@mui/material/Menu";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import MenuItem from "@mui/material/MenuItem";
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { AppBar, Box, Toolbar, Menu, Drawer, List, ListItem, ListItemText, MenuItem, InputBase, IconButton, Dialog, DialogTitle } from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { withTracker } from "meteor/react-meteor-data";
+import { Hospitals } from "../../api/hospital/Hospital"
 
 const SearchBox = styled("div")(({ theme }) => ({
   position: "relative",
@@ -53,9 +46,46 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+  function SearchDialog(props) {
+    const { data, onClose, selectedValue, open } = props;
+    const handleClose = () => {
+      onClose();
+    };
+
+    const handleListItemClick = () => {
+      onClose();
+    };
+
+
+    return (
+      <Dialog onClose={handleClose} open={open}>
+        <DialogTitle>Hospitals</DialogTitle>
+        <List sx={{ pt: 0}}>
+          {data.map((hospital) => (
+            <ListItem button onClick={() => handleListItemClick(data)} key={hospital.facilityName}>
+              <ListItemText primary={hospital.facilityName} />
+              </ListItem>
+          ))}
+          <ListItem button component={Link} onClick={handleClose} to="/directory" key="more">
+            <ListItemText sx={{color:"blue"}} primary="See full directory" />
+          </ListItem>
+        </List>
+      </Dialog>
+    );
+  };
+
+  SearchDialog.propTypes = {
+    data: PropTypes.array,
+    onClose: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+  };
+
 const MenuBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [drawerAnchorEl, setDrawerAnchorEl] = React.useState(null);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [data, setData] = React.useState([]);
+  const [openDialog, setOpenDialog] = React.useState(false);
   const isDrawerOpen = Boolean(drawerAnchorEl);
   const isProfileMenuOpen = Boolean(anchorEl);
 
@@ -74,9 +104,24 @@ const MenuBar = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  
+  const handleLogout = () => {
+    Meteor.logout();
+  };
+
+  const handleSearch = () => {
+    console.log(searchValue);
+    setData(Hospitals.find({facilityName: {$regex: searchValue, $options: 'i'}}, {limit: 15}).fetch());
+    setOpenDialog(true);
+  }
+
+  const closeDialog = () => {
+    setOpenDialog(false);
+  }
+
 
   const drawerId = "drawerMenu";
-  const renderDrawer= (
+  const renderDrawer = (
     <Drawer
       id={drawerId}
       anchor="left"
@@ -87,7 +132,7 @@ const MenuBar = (props) => {
         <List>
           {[
             ["WaitState", "/"],
-            ["Hospital Directory", "/directory"],
+            ["Hospital Directory", "/directory/"],
           ].map((text, index) => (
             <ListItem button component={Link} to={text[1]} key={text[0]}>
               <ListItemText primary={text[0]} />
@@ -115,10 +160,20 @@ const MenuBar = (props) => {
       open={isProfileMenuOpen}
       onClose={handleClose}
     >
-      <MenuItem onClick={handleClose}>Login</MenuItem>
-      <MenuItem onClick={handleClose}>Signup</MenuItem>
+      {Meteor.user() === "" ? (
+        <div>
+          <MenuItem component={Link} to="/admin/login" onClick={handleClose}>Login</MenuItem>
+          <MenuItem component={Link} to="/register" onClick={handleClose}>Signup</MenuItem>
+        </div>
+      ) : (
+        <div>
+        <MenuItem component={Link} to="/admin/login" onClick={handleLogout}>Logout</MenuItem>
+        </div>
+      )}
     </Menu>
   );
+
+  
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -137,13 +192,16 @@ const MenuBar = (props) => {
           </IconButton>
           {renderDrawer}
           <SearchBox>
+          <form onSubmit={handleSearch}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search hospitals"
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
+          </form>
           </SearchBox>
           <IconButton
             size="large"
@@ -158,8 +216,24 @@ const MenuBar = (props) => {
         </Toolbar>
       </AppBar>
       {renderProfileMenu}
+      <SearchDialog
+        data={data}
+        open={openDialog}
+        onClose={closeDialog}
+        />
     </Box>
   );
 };
 
-export default MenuBar;
+MenuBar.propTypes = {
+  ready: PropTypes.bool.isRequired,
+}
+
+const MenuBarContainer = withTracker(() => {
+    const subscription = Meteor.subscribe('Hospital');
+
+    return {
+        ready: subscription.ready(),
+    }
+})(MenuBar);
+export default MenuBarContainer;
