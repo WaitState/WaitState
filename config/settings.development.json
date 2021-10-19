@@ -1,7 +1,8 @@
 {
   "defaultAccounts": [
     { "email": "admin_hospital@gmail.com", "password": "admin", "role": "Hospital Admin" },
-    { "email": "admin_site@gmail.com", "password": "admin", "role": "Site Admin"  }
+    { "email": "admin_site@gmail.com", "password": "admin", "role": "Site Admin"},
+    { "email":  "john@test.com", "password": "password", "role": "User" }
   ],
 
   "defaultData": [
