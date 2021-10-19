@@ -4,11 +4,25 @@ import { styled, alpha } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { AppBar, Box, Toolbar, Menu, Drawer, List, ListItem, ListItemText, MenuItem, InputBase, IconButton, Dialog, DialogTitle } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Menu,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  InputBase,
+  IconButton,
+  Dialog,
+  DialogTitle,
+} from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
-import { Hospitals } from "../../api/hospital/Hospital"
+import { Hospitals } from "../../api/hospital/Hospital";
 
 const SearchBox = styled("div")(({ theme }) => ({
   position: "relative",
@@ -46,39 +60,48 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-  function SearchDialog(props) {
-    const { data, onClose, selectedValue, open } = props;
-    const handleClose = () => {
-      onClose();
-    };
+function SearchDialog(props) {
+  const { data, onClose, selectedValue, open } = props;
+  const handleClose = () => {
+    onClose();
+  };
 
-    const handleListItemClick = () => {
-      onClose();
-    };
+  const handleListItemClick = () => {
+    onClose();
+  };
 
-
-    return (
-      <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Hospitals</DialogTitle>
-        <List sx={{ pt: 0}}>
-          {data.map((hospital) => (
-            <ListItem button onClick={() => handleListItemClick(data)} key={hospital.facilityName}>
-              <ListItemText primary={hospital.facilityName} />
-              </ListItem>
-          ))}
-          <ListItem button component={Link} onClick={handleClose} to="/directory" key="more">
-            <ListItemText sx={{color:"blue"}} primary="See full directory" />
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle>Hospitals</DialogTitle>
+      <List sx={{ pt: 0 }}>
+        {data.map((hospital) => (
+          <ListItem
+            button
+            onClick={() => handleListItemClick(data)}
+            key={hospital.facilityName}
+          >
+            <ListItemText primary={hospital.facilityName} />
           </ListItem>
-        </List>
-      </Dialog>
-    );
-  };
+        ))}
+        <ListItem
+          button
+          component={Link}
+          onClick={handleClose}
+          to="/directory"
+          key="more"
+        >
+          <ListItemText sx={{ color: "blue" }} primary="See full directory" />
+        </ListItem>
+      </List>
+    </Dialog>
+  );
+}
 
-  SearchDialog.propTypes = {
-    data: PropTypes.array,
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-  };
+SearchDialog.propTypes = {
+  data: PropTypes.array,
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+};
 
 const MenuBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -88,6 +111,10 @@ const MenuBar = (props) => {
   const [openDialog, setOpenDialog] = React.useState(false);
   const isDrawerOpen = Boolean(drawerAnchorEl);
   const isProfileMenuOpen = Boolean(anchorEl);
+  const isAdmin =
+    Roles.userIsInRole(Meteor.userId(), "admin") ||
+    Roles.userIsInRole(Meteor.userId(), "Hospital Admin") ||
+    Roles.userIsInRole(Meteor.userId(), "Site Admin");
 
   const openDrawer = (event) => {
     setDrawerAnchorEl(event.currentTarget);
@@ -104,21 +131,25 @@ const MenuBar = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   const handleLogout = () => {
     Meteor.logout();
   };
 
   const handleSearch = () => {
     console.log(searchValue);
-    setData(Hospitals.find({facilityName: {$regex: searchValue, $options: 'i'}}, {limit: 15}).fetch());
+    setData(
+      Hospitals.find(
+        { facilityName: { $regex: searchValue, $options: "i" } },
+        { limit: 15 }
+      ).fetch()
+    );
     setOpenDialog(true);
-  }
+  };
 
   const closeDialog = () => {
     setOpenDialog(false);
-  }
-
+  };
 
   const drawerId = "drawerMenu";
   const renderDrawer = (
@@ -138,6 +169,12 @@ const MenuBar = (props) => {
               <ListItemText primary={text[0]} />
             </ListItem>
           ))}
+          {/* Admin Menu Options */}
+          {isAdmin == true && (
+            <ListItem button component={Link} to="/register">
+              <ListItemText primary={"Add Admin"} />
+            </ListItem>
+          )}
         </List>
       </Box>
     </Drawer>
@@ -161,7 +198,7 @@ const MenuBar = (props) => {
       onClose={handleClose}
     >
       {/* check if user is logged in */}
-      {Meteor.userId() === null ? ( 
+      {Meteor.userId() === null ? (
         <div>
           <MenuItem component={Link} to="/admin/login" onClick={handleClose}>
             Admin Login
@@ -180,8 +217,6 @@ const MenuBar = (props) => {
     </Menu>
   );
 
-  
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -199,16 +234,16 @@ const MenuBar = (props) => {
           </IconButton>
           {renderDrawer}
           <SearchBox>
-          <form onSubmit={handleSearch}>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search hospitals"
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-          </form>
+            <form onSubmit={handleSearch}>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search hospitals"
+                inputProps={{ "aria-label": "search" }}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+            </form>
           </SearchBox>
           <IconButton
             size="large"
@@ -223,24 +258,20 @@ const MenuBar = (props) => {
         </Toolbar>
       </AppBar>
       {renderProfileMenu}
-      <SearchDialog
-        data={data}
-        open={openDialog}
-        onClose={closeDialog}
-        />
+      <SearchDialog data={data} open={openDialog} onClose={closeDialog} />
     </Box>
   );
 };
 
 MenuBar.propTypes = {
   ready: PropTypes.bool.isRequired,
-}
+};
 
 const MenuBarContainer = withTracker(() => {
-    const subscription = Meteor.subscribe('Hospital');
+  const subscription = Meteor.subscribe("Hospital");
 
-    return {
-        ready: subscription.ready(),
-    }
+  return {
+    ready: subscription.ready(),
+  };
 })(MenuBar);
 export default MenuBarContainer;
