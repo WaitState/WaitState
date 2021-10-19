@@ -16,6 +16,7 @@ import AdminLogin from "../pages/AdminLogin";
 import PatientLogin from "../pages/PatientLogin";
 import Directory from "../pages/Directory";
 import Ticket from "../pages/Ticket"
+import Hospital from "../pages/Hospital";
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 const App = (props) => {
@@ -30,6 +31,8 @@ const App = (props) => {
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/login" component={PatientLogin} />
           <Route path="/ticket" component={Ticket} />
+          <Route path="/hospital/:hid" component={Hospital} />
+
           {/* <Route path="/signout" component={Signout}/> */}
           {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}
           {/* <AdminProtectedRoute path="/admin" component={ListStuffAdmin}/> */}
