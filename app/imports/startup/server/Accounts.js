@@ -24,6 +24,19 @@ Meteor.methods(
 }
 );
 
+// create default accounts for hospital admin and site admin
+function createUser(email, password, role) {
+  console.log(`  Creating user ${email}.`);
+  const userID = Accounts.createUser({
+    username: email,
+    email: email,
+    password: password,
+  });
+    Roles.createRole(role, { unlessExists: true });
+    Roles.addUsersToRoles(userID, role);
+  
+}
+
 // When running app for first time, pass a settings file to set up a default user account.
 if (Meteor.users.find().count() === 0) {
   if (Meteor.settings.defaultAccounts) {
