@@ -292,4 +292,4 @@ const MenuBarContainer = withTracker(() => {
     ready: subscription.ready(),
   };
 })(MenuBar);
-export default MenuBarContainer;
+export default withRouter(MenuBarContainer);
