@@ -17,24 +17,24 @@ import { styled } from "@mui/system";
 import { Hospitals } from "../../api/hospital/Hospital";
 
 const Container = styled("div")({
-    display: "flex",
-    flexDirection: "column",
-    margin: "150px auto",
-    textAlign: "center",
-    alignItems: "center",
-    width: "35%",
-  });
-  
-const Error = styled("span")({
-    color: "red",
-    marginBottom: "10px",
+  display: "flex",
+  flexDirection: "column",
+  margin: "150px auto",
+  textAlign: "center",
+  alignItems: "center",
+  width: "35%",
 });
 
-  const MyInput = styled(Input)({
-    width: "100%",
-    height: "50px",
-    margin: "15px 0",
-  });
+const Error = styled("span")({
+  color: "red",
+  marginBottom: "10px",
+});
+
+const MyInput = styled(Input)({
+  width: "100%",
+  height: "50px",
+  margin: "15px 0",
+});
 
 const Register = (props) => {
   const [firstname, setFirstname] = useState("");
@@ -44,7 +44,7 @@ const Register = (props) => {
   const [hospitalName, setHospitalName] = useState("");
   const [error, setError] = useState("");
   const { ready, history } = props;
-  const roles = "Hospital Admin"
+  const roles = "Hospital Admin";
   const hospitalDocument = Hospitals.find().fetch();
   var arrayOfHospitals = hospitalDocument.map((item) => item.facilityName);
 
@@ -53,9 +53,11 @@ const Register = (props) => {
   //console.log(inputValue);
   const handleSubmit = (e) => {
     e.preventDefault();
-    const hospitalObject = Hospitals.find({ facilityName: hospitalName }, {limit: 1}).fetch();
+    const hospitalObject = Hospitals.find(
+      { facilityName: hospitalName },
+      { limit: 1 }
+    ).fetch();
     const hospital = hospitalObject[0].facilityID;
-    console.log(hospital);
     Meteor.call(
       "createAccount",
       firstname,
@@ -65,12 +67,11 @@ const Register = (props) => {
       roles,
       hospital,
       (err) => {
-          if (err) {
-            setError(err.reason);
-          }
-          else{
-            history.push("/admin/login"); 
-          }
+        if (err) {
+          setError(err.reason);
+        } else {
+          history.push("/admin/login");
+        }
       }
     );
   };
