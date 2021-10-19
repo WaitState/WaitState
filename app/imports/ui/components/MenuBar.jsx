@@ -18,6 +18,7 @@ import {
   IconButton,
   Dialog,
   DialogTitle,
+  Divider,
 } from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -25,7 +26,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { Hospitals } from "../../api/hospital/Hospital";
 
 const MyAppBar = styled(AppBar)({
-    backgroundColor: "#0a9396",
+  backgroundColor: "#0a9396",
 });
 
 const SearchBox = styled("div")(({ theme }) => ({
@@ -115,9 +116,8 @@ const MenuBar = (props) => {
   const [openDialog, setOpenDialog] = React.useState(false);
   const isDrawerOpen = Boolean(drawerAnchorEl);
   const isProfileMenuOpen = Boolean(anchorEl);
-  const isAdmin =
+  const isSiteAdmin =
     Roles.userIsInRole(Meteor.userId(), "admin") ||
-    Roles.userIsInRole(Meteor.userId(), "Hospital Admin") ||
     Roles.userIsInRole(Meteor.userId(), "Site Admin");
 
   const openDrawer = (event) => {
@@ -173,11 +173,14 @@ const MenuBar = (props) => {
               <ListItemText primary={text[0]} />
             </ListItem>
           ))}
+          <Divider />
           {/* Admin Menu Options */}
-          {isAdmin == true && (
-            <ListItem button component={Link} to="/register">
-              <ListItemText primary={"Add Admin"} />
-            </ListItem>
+          {isSiteAdmin == true && (
+            <div>
+              <ListItem button component={Link} to="/register">
+                <ListItemText primary={"Add Admin"} />
+              </ListItem>
+            </div>
           )}
         </List>
       </Box>
