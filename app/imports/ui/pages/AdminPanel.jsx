@@ -114,7 +114,7 @@ const AdminPanel = (props) => {
     const firstname = firstName;
     const lastname = lastName;
     const email = patientID + "@temp.com";
-    const roles = "";
+    const roles = "Patient";
     const password = "password";
     const patients = Patients.find({hospital: hospital}).fetch();
     const qPos = patients.length + 1;
