@@ -58,7 +58,7 @@ const Directory = (props) => {
     var query = {};
     query[searchField] = { $regex: searchString, $options: "i" };
     if (searchString === null) {
-      setDirectory(Hospitals.find({ state: "HI" }).fetch());
+      setDirectory(Hospitals.find().fetch());
     } else {
       setDirectory(Hospitals.find(query).fetch());
     }
