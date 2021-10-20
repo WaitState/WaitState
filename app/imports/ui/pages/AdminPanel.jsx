@@ -390,6 +390,7 @@ AdminPanel.propTypes = {
 
 const AdminPanelContainer = withTracker(() => {
   const subscription = Meteor.subscribe("Patient");
+  const userSubscription = Meteor.subscribe('allUsers');
   const hospitalSubscription = Meteor.subscribe("Hospital");
   const facility = Meteor.users
       .find({ _id: Meteor.userId }, { limit: 1 })
@@ -397,7 +398,7 @@ const AdminPanelContainer = withTracker(() => {
   const match = facility[0].profile.hospital;
   return {
     hospital: Hospitals.find({ facilityID: match }).fetch(),
-    ready: subscription.ready() && hospitalSubscription.ready(),
+    ready: subscription.ready() && hospitalSubscription.ready() && userSubscription,
   };
 })(AdminPanel);
 

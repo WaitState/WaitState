@@ -6,6 +6,11 @@ import { Hospitals } from '../../api/hospital/Hospital';
 
 
 // User-level publication.
+
+Meteor.publish("allUsers", function () {
+  return Meteor.users.find({});
+});
+
 // If logged in, then publish documents owned by this user. Otherwise publish nothing.
 
 // alanning:roles publication
