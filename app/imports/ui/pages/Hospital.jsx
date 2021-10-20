@@ -72,9 +72,9 @@ const HospitalPage = (props) => {
               Phone Number
             </SubHeadingTypography>
             <Typography>{hospital[0].phoneNumber}</Typography>
-            <SubHeadingTypography variant="h6">Status</SubHeadingTypography>
+            <SubHeadingTypography variant="h6">Avg Wait Time PP</SubHeadingTypography>
             <Typography>
-              {`Wait time: ` + hospital[0].averageWaitTime}
+              {`Wait time: ` + hospital[0].averageWaitTime + ' minutes'}
             </Typography>
           </Information>
         </>

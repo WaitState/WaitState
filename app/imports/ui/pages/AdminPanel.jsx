@@ -370,7 +370,7 @@ const AdminPanel = (props) => {
             <Header>
               <RowEven>
                 <CellHeader>Current Time</CellHeader>
-                <CellHeader>Change To</CellHeader>
+                <CellHeader>Change To (Minutes)</CellHeader>
                 <CellHeader> </CellHeader>
               </RowEven>
             </Header>
