@@ -29,7 +29,7 @@ const Directory = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuIndex, setMenuIndex] = React.useState(3);
   const [searchField, setSearchField] = React.useState("state");
-  const { ready } = props;
+  const [ready, setReady] = React.useState(true);
   const searchFields = [
     { label: "Name", field: "facilityName" },
     { label: "Address", field: "address" },
@@ -38,6 +38,7 @@ const Directory = (props) => {
     { label: "Zipcode", field: "zipCode" },
     { label: "County", field: "countyName" },
   ];
+
   const params = useParams();
   const isMenuOpen = Boolean(anchorEl);
 
@@ -54,6 +55,9 @@ const Directory = (props) => {
     setSelectedIndex(index);
   };
   const handleSubmit = () => {
+    const subscription = Meteor.subscribe('HospitalSelective', searchField, searchString);
+    setReady(subscription.ready());
+    while (!ready) { };
     console.log(searchField);
     var query = {};
     query[searchField] = { $regex: searchString, $options: "i" };
@@ -62,8 +66,8 @@ const Directory = (props) => {
     } else {
       setDirectory(Hospitals.find(query).fetch());
     }
+    setReady(true);
   };
-
   return (
     <Box>
       {!Boolean(ready) ? (
@@ -154,16 +158,7 @@ const Directory = (props) => {
   );
 };
 
-Directory.propTypes = {
-  ready: PropTypes.bool.isRequired,
-};
 
-const DirectoryContainer = withTracker(() => {
-  const subscription = Meteor.subscribe("Hospital");
 
-  return {
-    ready: subscription.ready(),
-  };
-})(Directory);
 
-export default DirectoryContainer;
+export default Directory;
