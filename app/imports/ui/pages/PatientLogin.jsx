@@ -24,11 +24,12 @@ const patientID = "ABC12345";
 export default PatientLogin = ({ history }) => {
   const [uniqueID, setuniqueID] = useState("");
   const [error, setError] = useState("");
-  const password = "password";
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    Meteor.loginWithPassword(uniqueID, password, (err) => {
+    const password = "password";
+    const email = uniqueID + "@temp.com";
+    console.log(email, password);
+    Meteor.loginWithPassword(email, password, (err) => {
       if (err) {
         console.log(err.reason);
         setError(err.reason);
@@ -51,7 +52,11 @@ export default PatientLogin = ({ history }) => {
           placeholder="Unique ID"
           onChange={(e) => setuniqueID(e.target.value)}
         ></MyInput>
-        <Button variant="contained" type="submit">
+        <Button
+          variant="contained"
+          sx={{ background: "#03B591" }}
+          type="submit"
+        >
           Check Status
         </Button>
       </form>

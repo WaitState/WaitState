@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
 import { styled } from "@mui/system";
+
 import { Button, Typography, Container, List, ListItem, Card, CardActions, CardContent, CardMedia } from "@mui/material";
 import { Hospitals } from '../../api/hospital/Hospital';
 import Hospital from './Hospital';

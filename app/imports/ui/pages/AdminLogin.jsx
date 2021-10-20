@@ -23,13 +23,16 @@ export default AdminLogin = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  // const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     Meteor.loginWithPassword(email, password, (err) => {
+      console.log(email,password)
       if (err) {
         console.log(err.reason);
+        // pops up if incorrect passsword or user not found
         setError(err.reason);
       } else {
         // TODO: redirect to admin page
@@ -60,7 +63,11 @@ export default AdminLogin = ({ history }) => {
           onChange={(e) => setPassword(e.target.value)}
         ></MyInput>
 
-        <Button variant="contained" type="submit">
+        <Button
+          variant="contained"
+          sx={{ background: "#03B591" }}
+          type="submit"
+        >
           Login
         </Button>
       </form>
