@@ -24,90 +24,10 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import { Hospitals } from "../../api/hospital/Hospital";
-import SearchDialog from "../components/SearchDialog";
 const MyAppBar = styled(AppBar)({
   backgroundColor: "#0a9396",
 });
 
-const SearchBox = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
-/*
-function SearchDialog(props) {
-  const { data, onClose, selectedValue, open } = props;
-  const handleClose = () => {
-    onClose();
-  };
-
-  const handleListItemClick = () => {
-    onClose();
-  };
-
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Hospitals</DialogTitle>
-      <List sx={{ pt: 0 }}>
-        {data.map((hospital) => (
-          <ListItem
-            button
-            onClick={() => handleListItemClick(data)}
-            key={hospital.facilityName}
-          >
-            <ListItemText primary={hospital.facilityName} />
-          </ListItem>
-        ))}
-        <ListItem
-          button
-          component={Link}
-          onClick={handleClose}
-          to="/directory"
-          key="more"
-        >
-          <ListItemText sx={{ color: "blue" }} primary="See full directory" />
-        </ListItem>
-      </List>
-    </Dialog>
-  );
-}
-
-SearchDialog.propTypes = {
-  data: PropTypes.array,
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
-*/
 const MenuBar = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [drawerAnchorEl, setDrawerAnchorEl] = React.useState(null);
@@ -253,18 +173,7 @@ const MenuBar = (props) => {
             <MenuIcon />
           </IconButton>
           {renderDrawer}
-          <SearchBox>
-            <form onSubmit={handleSearch}>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search hospitals"
-                inputProps={{ "aria-label": "search" }}
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
-            </form>
-          </SearchBox>
+          <Box sx={{flexGrow: 1}} />
           <IconButton
             size="large"
             aria-label="user account"
@@ -278,7 +187,6 @@ const MenuBar = (props) => {
         </Toolbar>
       </MyAppBar>
       {renderProfileMenu}
-      <SearchDialog data={data} open={openDialog} onClose={closeDialog} />
     </Box>
   );
 };
