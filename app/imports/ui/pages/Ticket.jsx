@@ -33,13 +33,12 @@ const MyContainer = styled(Container)({
   alignItems: "center",
   width: "60%",
 });
-const id = "ABC1234";
-var waitTime = 15;
-const checkInTime = new Date();
-const reason = "knife cuts";
+
 
 
 const Ticket = (props) => {
+  var waitTime = 15;
+  const checkInTime = new Date();
   var numbPatients = "";
   var average = "";
   const { ready } = props;
@@ -52,24 +51,30 @@ const Ticket = (props) => {
   if (hospital.length  === 0 && patient.length === 1) {
     hospital = Hospitals.find({ facilityID: patient[0].hospital }, {limit: 1}).fetch();
   }
-  console.log(patient, hospital)
+  console.log("Patient object: ", patient)
+  console.log("Hospital object: ", hospital)
+
+
+
+  var reason = ""
+  var id = ""
+  var location = ""
+  var qPos = ""
+  //console.log("patient object: ", patient)
+  patient.map((result) => {
+    id = result.patientID
+    reason = result.reason
+    location = result.hospital
+    qPos = result.qPos
+  })
+  //console.log(reason)
 
   hospital.map((result) => {
     numbPatients = result.patientList.length - 1;
     average = result.averageWaitTime;
   });
 
-  var reason = ""
-  var id = ""
-  var location = ""
-  //console.log("patient object: ", patient)
-  patient.map((result) => {
-    id = result.patientID
-    reason = result.reason
-    location = result.hospital
-  })
-  //console.log(reason)
-  waitTime = numbPatients * average;
+  waitTime = qPos * average;
 
   return (
     <MyContainer>
