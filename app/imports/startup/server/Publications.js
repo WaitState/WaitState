@@ -39,3 +39,11 @@ Meteor.publish('Hospital', function publish() {
     return Hospitals.find()
 
 });
+Meteor.publish('HospitalSelective', function (key, value) {
+  const publications = [];
+  publications.push(Company.find(
+    {
+      key: value,
+    },
+  ));
+});
