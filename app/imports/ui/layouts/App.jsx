@@ -95,7 +95,8 @@ const HospitalAdminProtectedRoute = ({ component: Component, ...rest }) => (
     {...rest}
     render={(props) => {
       const isLogged = Meteor.userId() !== null;
-      const isAdmin = Roles.userIsInRole(Meteor.userId(), "Hospital Admin");
+      const isAdmin = Roles.userIsInRole(Meteor.userId(), "Hospital Admin") || Roles.userIsInRole(Meteor.userId(), "Hospital Admin");
+      console.log(isAdmin);
       return isLogged && isAdmin ? (
         <Component {...props} />
       ) : (

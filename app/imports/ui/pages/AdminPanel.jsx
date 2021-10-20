@@ -12,13 +12,13 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid } from "@mui/x-data-grid";
 import { Patients } from "../../api/patient/Patient";
 import swal from "sweetalert";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
-import { Hospitals } from '../../api/hospital/Hospital';
-import { withRouter } from 'react-router-dom';
+import { Hospitals } from "../../api/hospital/Hospital";
+import { withRouter, useHistory } from "react-router-dom";
 
 //style the outer container
 const AdminContainer = styled(Container)({
@@ -77,7 +77,7 @@ const PageHeader = styled(Typography)({
 });
 
 const PanelHeader = styled(Typography)({
-  fontSize: "30px !important" ,
+  fontSize: "30px !important",
   textDecoration: "underline !important",
   marginBottom: "5px !important",
   marginTop: "10px !important",
@@ -90,19 +90,18 @@ const SubmitPatientButton = styled(Button)({
 });
 
 const AdminPanel = (props) => {
+  const { hospital, ready, history } = props;
+  console.log("hospital", hospital);
 
-  const { hospital, ready } = props;
-  console.log("hospital", hospital)
-
-  var currentTime = ""
-  var id = ""
+  var currentTime = "";
+  var id = "";
   hospital.map((result) => {
     currentTime = result.averageWaitTime;
     id = result._id;
   });
 
   //this needs to go to handleUpdate
-  console.log("ID :", id)
+  console.log("ID :", id);
   //right info
   console.log("Time: ", currentTime);
   const [currentWaitTime, setCurrentTime] = React.useState("");
@@ -137,33 +136,32 @@ const AdminPanel = (props) => {
 
     console.log("Hospital to update: ", hospitalRecord);
     //This is good
-    console.log("CurrentWait Time Prior to update: ", currentWaitTime)
-    var currentHostpitalRecord = {_id: hospitalRecord}
-    var newTime = {$set: {averageWaitTime: currentWaitTime }}
+    console.log("CurrentWait Time Prior to update: ", currentWaitTime);
+    var currentHostpitalRecord = { _id: hospitalRecord };
+    var newTime = { $set: { averageWaitTime: currentWaitTime } };
 
-    Hospitals.update(currentHostpitalRecord, newTime, function (err,res) {
+    Hospitals.update(currentHostpitalRecord, newTime, function (err, res) {
       if (err) {
         swal("Error", error.message, "error").then(function () {
-              window.location = "/#/adminpanel";
-            }
-        )
+          history.replace("/adminpanel");
+        });
       } else {
         swal({
           text: "Success!",
           icon: "success",
         }).then(function () {
-          window.location = "/#/adminpanel";
+          history.replace("/adminpanel");
         });
       }
-    })
-  } //end handleUpdate
+    });
+  }; //end handleUpdate
 
   const handleSubmit = (event) => {
     //submit into the correction collection
     event.preventDefault();
     const adminUser = Meteor.users
-        .find({ _id: Meteor.userId }, { limit: 1 })
-        .fetch();
+      .find({ _id: Meteor.userId }, { limit: 1 })
+      .fetch();
     const adminID = adminUser[0]._id;
     const hospital = adminUser[0].profile.hospital;
     const checkInTime = new Date().toString();
@@ -172,54 +170,54 @@ const AdminPanel = (props) => {
     const email = patientID + "@temp.com";
     const roles = "";
     const password = "password";
-    const patients = Patients.find({hospital: hospital}).fetch();
+    const patients = Patients.find({ hospital: hospital }).fetch();
     const qPos = patients.length + 1;
     console.log(qPos);
     Meteor.call(
-        "createAccount",
-        firstname,
-        lastname,
-        email,
-        password,
-        roles,
-        hospital,
-        (err) => {
-          if (err) {
-            setError(err.reason);
-          }
+      "createAccount",
+      firstname,
+      lastname,
+      email,
+      password,
+      roles,
+      hospital,
+      (err) => {
+        if (err) {
+          setError(err.reason);
         }
+      }
     );
     Patients.insert(
-        {
-          patientID,
-          firstName,
-          lastName,
-          reason,
-          checkInTime,
-          adminID,
-          hospital,
-          qPos,
-        },
-        (error) => {
-          if (error) {
-            swal("Error", error.message, "error").then(function () {
-              window.location = "/#/adminpanel";
-            });
-          } else {
-            swal({
-              text: "Success!",
-              icon: "success",
-            }).then(function () {
-              window.location = "/#/adminpanel";
-            });
-          }
+      {
+        patientID,
+        firstName,
+        lastName,
+        reason,
+        checkInTime,
+        adminID,
+        hospital,
+        qPos,
+      },
+      (error) => {
+        if (error) {
+          swal("Error", error.message, "error").then(function () {
+            history.replace("/adminpanel");
+          });
+        } else {
+          swal({
+            text: "Success!",
+            icon: "success",
+          }).then(function () {
+            history.replace("/adminpanel");
+          });
         }
+      }
     );
   };
 
   const matchAdmin = Meteor.users
-      .find({ _id: Meteor.userId }, { limit: 1 })
-      .fetch();
+    .find({ _id: Meteor.userId }, { limit: 1 })
+    .fetch();
   const matchHospital = matchAdmin[0].profile.hospital;
 
   // Grab rows where the hospital value is equal to the hospital connected to the admin.
@@ -237,153 +235,203 @@ const AdminPanel = (props) => {
     console.log(patientCheck);
     const patientId = patientCheck[0]._id;
     console.log(patientId);
-    const email = toDelete.toString()+"@temp.com";
+    const email = toDelete.toString() + "@temp.com";
     console.log(email);
-    const userCheck = Meteor.users.find({username: email}).fetch();
+    const userCheck = Meteor.users.find({ username: email }).fetch();
     console.log(userCheck);
     const userId = userCheck[0]._id;
     Meteor.users.remove({ _id: userId });
-    Patients.remove( { _id: patientId  });
-  }
+    Patients.remove({ _id: patientId }, (error) => {
+      if (error) {
+        swal("Error", error.message, "error").then(function () {
+          history.replace("/adminpanel");
+        });
+      } else {
+        swal({
+          text: "Success!",
+          icon: "success",
+        }).then(function () {
+          history.replace("/adminpanel");
+        });
+      }
+    });
+  };
 
   // Create columns for grid Table
   const columns = [
-    { field: 'Patient ID', editable: true, width: '150', valueGetter: (params) => `${params.row.patientID}` },
-    { field: 'First Name', editable: true, width: '150', valueGetter: (params) => `${params.row.firstName}` },
-    { field: 'Last Name', editable: true,  width: '150', valueGetter: (params) => `${params.row.lastName}` },
-    { field: 'Reason', editable: true, width:'150', valueGetter: (params) => `${params.row.reason}` },
-    { field: 'Hospital', editable: true, width:'150', valueGetter: (params) => `${params.row.hospital}` },
-    { field: 'Admin ID', editable: true, width:'200', valueGetter: (params) => `${params.row.adminID}` },
-    { field: 'Queue Position', editable: true, width:'150', valueGetter: (params) => `${params.row.qPos}` },
-    { field: 'Delete', width:'100', renderCell: (patientID) => (
-          <Button
-              variant="contained"
-              color="primary"
-              onClick={() => deletePatient(patientID)}
-          >
-            Delete
-          </Button>
-          )
+    {
+      field: "Patient ID",
+      editable: true,
+      width: "150",
+      valueGetter: (params) => `${params.row.patientID}`,
     },
-];
+    {
+      field: "First Name",
+      editable: true,
+      width: "150",
+      valueGetter: (params) => `${params.row.firstName}`,
+    },
+    {
+      field: "Last Name",
+      editable: true,
+      width: "150",
+      valueGetter: (params) => `${params.row.lastName}`,
+    },
+    {
+      field: "Reason",
+      editable: true,
+      width: "150",
+      valueGetter: (params) => `${params.row.reason}`,
+    },
+    {
+      field: "Hospital",
+      editable: true,
+      width: "150",
+      valueGetter: (params) => `${params.row.hospital}`,
+    },
+    {
+      field: "Admin ID",
+      editable: true,
+      width: "200",
+      valueGetter: (params) => `${params.row.adminID}`,
+    },
+    {
+      field: "Queue Position",
+      editable: true,
+      width: "150",
+      valueGetter: (params) => `${params.row.qPos}`,
+    },
+    {
+      field: "Delete",
+      width: "100",
+      renderCell: (patientID) => (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => deletePatient(patientID)}
+        >
+          Delete
+        </Button>
+      ),
+    },
+  ];
 
   return (
-      <AdminContainer>
-        <PageHeader> Administrator Panel</PageHeader>
-        <PanelHeader>Check In a New Patient</PanelHeader>
-        <br/>
-        <form onSubmit={handleSubmit}>
-          <AdminTable>
-            <Header>
-              <RowEven>
-                <CellHeader>
-                  Patient ID:
-                  {patientID}
-                </CellHeader>
-                <CellHeader>
-                  First Name
-                  <TextField
-                      id="patient first Name"
-                      label=""
-                      type="Patient first Name"
-                      placeholder="Bob"
-                      onChange={(e) => setFirstName(e.target.value)}
-                  >
-                    {" "}
-                  </TextField>
-                </CellHeader>
-                <CellHeader>
-                  Last Name
-                  <TextField
-                      id="patient last  Name"
-                      label=""
-                      type="Patient last Name"
-                      placeholder="Smith"
-                      onChange={(e) => setLastName(e.target.value)}
-                  >
-                    {" "}
-                  </TextField>
-                </CellHeader>
-                <CellHeader>
-                  Reason
-                  <TextField
-                      id="reason"
-                      label=""
-                      type="reason"
-                      placeholder="hurt foot"
-                      onChange={(e) => setReason(e.target.value)}
-                  >
-                    {" "}
-                  </TextField>
-                </CellHeader>
-              </RowEven>
-            </Header>
-          </AdminTable>
-          <SubmitPatientButton variant="contained" onClick={generateID}>
-            Generate unique patientID
-          </SubmitPatientButton>
-          <SubmitPatientButton type="submit" variant="contained">
-            Add New Patient
-            <span> </span>
-          </SubmitPatientButton>
-        </form>
-        <br/>
-        <br/>
-        <PanelHeader>Change Weighted Wait Time</PanelHeader>
+    <AdminContainer>
+      <PageHeader> Administrator Panel</PageHeader>
+      <PanelHeader>Check In a New Patient</PanelHeader>
+      <br />
+      <form onSubmit={handleSubmit}>
+        <AdminTable>
+          <Header>
+            <RowEven>
+              <CellHeader>
+                Patient ID:
+                {patientID}
+              </CellHeader>
+              <CellHeader>
+                First Name
+                <TextField
+                  id="patient first Name"
+                  label=""
+                  type="Patient first Name"
+                  placeholder="Bob"
+                  onChange={(e) => setFirstName(e.target.value)}
+                >
+                  {" "}
+                </TextField>
+              </CellHeader>
+              <CellHeader>
+                Last Name
+                <TextField
+                  id="patient last  Name"
+                  label=""
+                  type="Patient last Name"
+                  placeholder="Smith"
+                  onChange={(e) => setLastName(e.target.value)}
+                >
+                  {" "}
+                </TextField>
+              </CellHeader>
+              <CellHeader>
+                Reason
+                <TextField
+                  id="reason"
+                  label=""
+                  type="reason"
+                  placeholder="hurt foot"
+                  onChange={(e) => setReason(e.target.value)}
+                >
+                  {" "}
+                </TextField>
+              </CellHeader>
+            </RowEven>
+          </Header>
+        </AdminTable>
+        <SubmitPatientButton variant="contained" onClick={generateID}>
+          Generate unique patientID
+        </SubmitPatientButton>
+        <SubmitPatientButton type="submit" variant="contained">
+          Add New Patient
+          <span> </span>
+        </SubmitPatientButton>
+      </form>
+      <br />
+      <br />
+      <PanelHeader>Change Weighted Wait Time</PanelHeader>
 
-        <form onSubmit={handleUpdate}>
-          <AdminTable>
-            <Header>
-              <RowEven>
-                <CellHeader>Current Time</CellHeader>
-                <CellHeader>Change To</CellHeader>
-                <CellHeader> </CellHeader>
-              </RowEven>
-            </Header>
-            <TableBody>
-              <RowOdd>
-                <CellRow>{currentTime} </CellRow>
-                <CellRow>
-                  <TextField
-                      id="changeTime"
-                      label=""
-                      type="Change Time"
-                      placeholder={currentTime}
-                      onChange={(e) => setCurrentTime(e.target.value)}>
-                  </TextField>
-                </CellRow>
-                <CellRow /*Submit The Changes*/>Submit
-                  <Button type="submit" variant="contained">
-                    Change Average Wait Time
-                  </Button>
-                </CellRow>
-              </RowOdd>
-            </TableBody>
-          </AdminTable>
-        </form>
+      <form onSubmit={handleUpdate}>
+        <AdminTable>
+          <Header>
+            <RowEven>
+              <CellHeader>Current Time</CellHeader>
+              <CellHeader>Change To</CellHeader>
+              <CellHeader> </CellHeader>
+            </RowEven>
+          </Header>
+          <TableBody>
+            <RowOdd>
+              <CellRow>{currentTime} </CellRow>
+              <CellRow>
+                <TextField
+                  id="changeTime"
+                  label=""
+                  type="Change Time"
+                  placeholder={currentTime}
+                  onChange={(e) => setCurrentTime(e.target.value)}
+                ></TextField>
+              </CellRow>
+              <CellRow /*Submit The Changes*/>
+                Submit
+                <Button type="submit" variant="contained">
+                  Change Average Wait Time
+                </Button>
+              </CellRow>
+            </RowOdd>
+          </TableBody>
+        </AdminTable>
+      </form>
 
-        <form onSubmit={handleDelete}
-        >
-          <input
-          type="text" id="patientSelect"
+      <form onSubmit={handleDelete}>
+        <input
+          type="text"
+          id="patientSelect"
           onChange={(e) => setToDelete(e.target.value)}
-          />
-          <Button type="submit">
-            Submit
-          </Button>
-        </form>
-        <br/>
-        <PanelHeader>List of Current Patients </PanelHeader>
-        <div style={{ height: 250, width: '100%' }}>
-          <DataGrid
-              getRowId={(r) => r._id}
-              rows={rows}
-              columns={columns}
-              checkboxSelection
-          />
-        </div>
-        <br/>
-      </AdminContainer>
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+      <br />
+      <PanelHeader>List of Current Patients </PanelHeader>
+      <div style={{ height: 250, width: "100%" }}>
+        <DataGrid
+          getRowId={(r) => r._id}
+          rows={rows}
+          columns={columns}
+          checkboxSelection
+        />
+      </div>
+      <br />
+    </AdminContainer>
   );
 };
 
@@ -394,15 +442,18 @@ AdminPanel.propTypes = {
 
 const AdminPanelContainer = withTracker(() => {
   const subscription = Meteor.subscribe("Patient");
-  const userSubscription = Meteor.subscribe('allUsers');
+  const userSubscription = Meteor.subscribe("allUsers");
   const hospitalSubscription = Meteor.subscribe("Hospital");
   const facility = Meteor.users
-      .find({ _id: Meteor.userId }, { limit: 1 })
-      .fetch();
+    .find({ _id: Meteor.userId }, { limit: 1 })
+    .fetch();
   const match = facility[0].profile.hospital;
   return {
     hospital: Hospitals.find({ facilityID: match }).fetch(),
-    ready: subscription.ready() && hospitalSubscription.ready() && userSubscription.ready(),
+    ready:
+      subscription.ready() &&
+      hospitalSubscription.ready() &&
+      userSubscription.ready(),
   };
 })(AdminPanel);
 
