@@ -38,7 +38,7 @@ const MyContainer = styled(Container)({
 
 const Ticket = (props) => {
   var waitTime = 15;
-  const checkInTime = new Date();
+  var checkInTime = new Date();
   var numbPatients = "";
   var average = "";
   const { ready } = props;
@@ -69,6 +69,9 @@ const Ticket = (props) => {
   });
 
   waitTime = qPos * average;
+  //update estimated check-in time according to wait time
+  var newTime = new Date(checkInTime.getTime() + waitTime*60000);
+  var ampm = newTime.getHours() >= 12 ? 'pm' : 'am';
 
   return (
     <MyContainer>
@@ -88,7 +91,7 @@ const Ticket = (props) => {
           </Typography>
           <Typography gutterBottom variant="body1" component="div">
             Estimated Check-In Time:{" "}
-            {checkInTime.getHours() + ":" + checkInTime.getMinutes()}
+            {newTime.getHours() + ":" + newTime.getMinutes() + ampm}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Reason of Visit: {reason}
