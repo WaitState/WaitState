@@ -116,6 +116,9 @@ const AdminPanel = (props) => {
     const email = patientID + "@temp.com";
     const roles = "";
     const password = "password";
+    const patients = Patients.find({hospital: hospital}).fetch();
+    const qPos = patients.length + 1;
+    console.log(qPos);
     Meteor.call(
         "createAccount",
         firstname,
@@ -139,6 +142,7 @@ const AdminPanel = (props) => {
           checkInTime,
           adminID,
           hospital,
+          qPos,
         },
         (error) => {
           if (error) {
@@ -174,6 +178,7 @@ const AdminPanel = (props) => {
     { field: 'Reason', width:'150', valueGetter: (params) => `${params.row.reason}` },
     { field: 'Hospital', width:'150', valueGetter: (params) => `${params.row.hospital}` },
     { field: 'Admin ID', width:'250', valueGetter: (params) => `${params.row.adminID}` },
+    { field: 'Queue Position', width:'250', valueGetter: (params) => `${params.row.qPos}` },
   ];
 
   return (
