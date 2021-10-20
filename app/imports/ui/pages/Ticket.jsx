@@ -44,15 +44,29 @@ const Ticket = (props) => {
   var average = "";
   const { ready, patient } = props;
   const [hospital, setHospital] = React.useState([]);
+
   if (ready && hospital === []) {
     setHospital(Hospitals.find({ facilityID: patient[0].hospital }).fetch());
   }
-  console.log(patient, hospital);
+
+
+
+  //console.log(patient, hospital);
   hospital.map((result) => {
     numbPatients = result.patientList.length - 1;
     average = result.averageWaitTime;
   });
 
+  var reason = ""
+  var id = ""
+  var location = ""
+  //console.log("patient object: ", patient)
+  patient.map((result) => {
+    id = result.patientID
+    reason = result.reason
+    location = result.hospital
+  })
+  //console.log(reason)
   waitTime = numbPatients * average;
 
   return (
