@@ -84,16 +84,15 @@ const PanelHeader = styled(Typography)({
 });
 
 const MyTextField = styled(TextField)({
-  // boxSizing: "border-box !important",
+  boxSizing: "border-box !important",
   color: "rgba(0, 0, 0, 0.87) !important",
   height:"1.4375em !important",
-  padding:"18.5px 14px !important",
+  // padding:"18.5px 14px !important",
   fontSize: "1rem !important",
   // alignItems: "center !important",
   fontWeight: "400 !important",
   borderRadius: "4px !important",
-  boxSizing: "content-box !important",
-
+  // boxSizing: "content-box !important",
 })
 const SubmitButton = styled(Button)({
   background: "#03B591 !important",
@@ -295,7 +294,7 @@ const AdminPanel = (props) => {
                       id="patient first Name"
                       label=""
                       type="Patient first Name"
-                      placeholder="Bob"
+                      placeholder="  Bob"
                       onChange={(e) => setFirstName(e.target.value)}
                   >
                     {" "}
@@ -307,7 +306,7 @@ const AdminPanel = (props) => {
                       id="patient last  Name"
                       label=""
                       type="Patient last Name"
-                      placeholder="Smith"
+                      placeholder="  Smith"
                       onChange={(e) => setLastName(e.target.value)}
                   >
                     {" "}
@@ -319,7 +318,7 @@ const AdminPanel = (props) => {
                       id="reason"
                       label=""
                       type="reason"
-                      placeholder="hurt foot"
+                      placeholder="  hurt foot"
                       onChange={(e) => setReason(e.target.value)}
                   >
                     {" "}
@@ -357,7 +356,7 @@ const AdminPanel = (props) => {
                       id="changeTime"
                       label=""
                       type="Change Time"
-                      placeholder={currentTime}
+                      placeholder= {`  ` + currentTime}
                       onChange={(e) => setCurrentTime(e.target.value)}>
                   </MyTextField>
                 </CellRow>
@@ -370,13 +369,13 @@ const AdminPanel = (props) => {
             </TableBody>
           </AdminTable>
         </form>
-
+        <Container sx={{width: "100% !important"}}>
         <form onSubmit={handleDelete}
         >
           <MyTextField
           type="text" 
           id="patientSelect"
-          placeholder="patient Id"
+          placeholder="  patient Id"
           onChange={(e) => setToDelete(e.target.value)}
 
           />
@@ -384,6 +383,7 @@ const AdminPanel = (props) => {
             Checkout Patient
           </SubmitButton>
         </form>
+        </Container>
         <br/>
         <PanelHeader>List of Current Patients </PanelHeader>
         <div style={{ height: 250, width: '100%' }}>
