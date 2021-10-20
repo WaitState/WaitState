@@ -19,6 +19,8 @@ import {
   Dialog,
   DialogTitle,
   Divider,
+  Button,
+  Typography,
 } from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -173,6 +175,9 @@ const MenuBar = (props) => {
             <MenuIcon />
           </IconButton>
           {renderDrawer}
+          {/* display role in text */}
+          {isHospitalAdmin == true && <Typography>Welcome Hospital Admin!</Typography>}
+          {isSiteAdmin == true && <Typography>Welcome Site Admin!</Typography>}
           <Box sx={{flexGrow: 1}} />
           <IconButton
             size="large"
