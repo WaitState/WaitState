@@ -42,12 +42,17 @@ const reason = "knife cuts";
 const Ticket = (props) => {
   var numbPatients = "";
   var average = "";
-  const { ready, patient } = props;
-  const [hospital, setHospital] = React.useState([]);
-  if (ready && hospital === []) {
-    setHospital(Hospitals.find({ facilityID: patient[0].hospital }).fetch());
+  const { ready } = props;
+  var hospital = [];
+  var patient = [];
+  const params = useParams();
+  if (patient.length === 0) {
+    patient = Patients.find({ patientID: params.pid }, {limit:1}).fetch();
   }
-  console.log(patient, hospital);
+  if (hospital.length  === 0 && patient.length === 1) {
+    hospital = Hospitals.find({ facilityID: patient[0].hospital }, {limit: 1}).fetch();
+  }
+  console.log(patient, hospital)
   hospital.map((result) => {
     numbPatients = result.patientList.length - 1;
     average = result.averageWaitTime;
@@ -97,18 +102,15 @@ const Ticket = (props) => {
 // Covid Trail
 Ticket.propTypes = {
   ready: PropTypes.bool.isRequired,
-  patient: PropTypes.array,
 };
 
 const TicketContainer = withTracker(() => {
   const subscription = Meteor.subscribe("Hospital");
   const patientSub = Meteor.subscribe("Patient");
-  const params = useParams();
   return {
     //Facility ID will need to be changed to match the hospital the patient is
     //actually at
     ready: subscription.ready() && patientSub.ready(),
-    patient: Patients.find({ patientID: params.pid }, { limit: 1 }).fetch(),
   };
 })(Ticket);
 
