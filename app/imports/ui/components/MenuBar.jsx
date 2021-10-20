@@ -24,7 +24,7 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
 import { Hospitals } from "../../api/hospital/Hospital";
-import  SearchDialog  from "../components/SearchDialog";
+import SearchDialog from "../components/SearchDialog";
 const MyAppBar = styled(AppBar)({
   backgroundColor: "#0a9396",
 });
@@ -123,7 +123,7 @@ const MenuBar = (props) => {
   const isHospitalAdmin =
     Roles.userIsInRole(Meteor.userId(), "admin") ||
     Roles.userIsInRole(Meteor.userId(), "Hospital Admin");
-  
+
   const openDrawer = (event) => {
     setDrawerAnchorEl(event.currentTarget);
   };
@@ -169,8 +169,10 @@ const MenuBar = (props) => {
     >
       <Box role="presentation" onClick={closeDrawer} onKeyDown={closeDrawer}>
         <List>
+        <ListItem button component={Link} to={"/"} >
+          <img src="https://i.ibb.co/898sp8Q/Untitled-2.png" width="100" height="50"></img>
+        </ListItem>
           {[
-            ["WaitState", "/"],
             ["Hospital Directory", "/directory"],
           ].map((text, index) => (
             <ListItem button component={Link} to={text[1]} key={text[0]}>
@@ -188,9 +190,9 @@ const MenuBar = (props) => {
           ) : null}
           {isHospitalAdmin ? (
             <div>
-            <ListItem button component={Link} to="/adminpanel">
-              <ListItemText primary="Admin Panel" />
-            </ListItem>
+              <ListItem button component={Link} to="/adminpanel">
+                <ListItemText primary="Admin Panel" />
+              </ListItem>
             </div>
           ) : null}
         </List>
