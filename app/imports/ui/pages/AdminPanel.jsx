@@ -10,8 +10,6 @@ import {
   TableBody,
   Table,
   Button,
-  Box,
-  Input,
   TextField,
 } from "@mui/material";
 import { DataGrid } from '@mui/x-data-grid';
@@ -159,7 +157,14 @@ const AdminPanel = (props) => {
     );
   };
 
-  const rows = Patients.find({}).fetch();
+  const adminUser = Meteor.users
+      .find({ _id: Meteor.userId }, { limit: 1 })
+      .fetch();
+  const hospital2 = adminUser[0].profile.hospital;
+
+  // Grab rows where the hospital value is equal to the hospital connected to the admin.
+  const rows = Patients.find({hospital: hospital2}).fetch();
+
   console.log(rows);
 
   const columns = [
@@ -174,7 +179,6 @@ const AdminPanel = (props) => {
   return (
       <AdminContainer>
         <PageHeader> Administrator Panel</PageHeader>
-
         <PanelHeader>Check In a New Patient</PanelHeader>
         <form onSubmit={handleSubmit}>
           <AdminTable>
@@ -208,7 +212,6 @@ const AdminPanel = (props) => {
                     {" "}
                   </TextField>
                 </CellHeader>
-
                 <CellHeader>
                   Reason
                   <TextField
