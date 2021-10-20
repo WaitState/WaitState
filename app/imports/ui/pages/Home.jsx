@@ -11,7 +11,7 @@ const MyContainer = styled(Container)({
   margin: "150px auto",
   textAlign: "center",
   alignItems: "center",
-  width: "60%",
+  width: "65%",
 });
 
 const MyButton = styled(Button)({
