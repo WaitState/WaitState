@@ -17,6 +17,8 @@ import { Patients } from "../../api/patient/Patient";
 import swal from "sweetalert";
 import PropTypes from "prop-types";
 import { withTracker } from "meteor/react-meteor-data";
+import { Hospitals } from '../../api/hospital/Hospital';
+import { withRouter } from 'react-router-dom';
 
 //style the outer container
 const AdminContainer = styled(Container)({
@@ -88,7 +90,23 @@ const SubmitPatientButton = styled(Button)({
 });
 
 const AdminPanel = (props) => {
-  //Set chekInUserID OR patientID should be created by us to be random
+
+  const { hospital } = props;
+  console.log("hospital", hospital)
+
+  var currentTime = ""
+  var id = ""
+  hospital.map((result) => {
+    currentTime = result.averageWaitTime;
+    id = result._id;
+  });
+
+  //this needs to go to handleUpdate
+  console.log("ID :", id)
+  //right info
+  console.log("Time: ", currentTime);
+  const [currentWaitTime, setCurrentTime] = React.useState("");
+  const hospitalRecordID = id;
   const [patientID, setPatientID] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -99,8 +117,45 @@ const AdminPanel = (props) => {
     const uniqueTest = Patients.find({ patientID: tempID }).fetch();
     if (uniqueTest.length === 0) {
       setPatientID(tempID);
+    } else {
+      generateID();
     }
   };
+
+  const handleUpdate = (event) => {
+    event.preventDefault();
+
+    //document ID
+    //average waitTime
+    //
+    // const location = Meteor.users
+    //     .find({ _id: Meteor.userId }, { limit: 1 })
+    //     .fetch();
+
+    const hospitalRecord = hospitalRecordID;
+
+    console.log("Hospital to update: ", hospitalRecord);
+    //This is good
+    console.log("CurrentWait Time Prior to update: ", currentWaitTime)
+    var currentHostpitalRecord = {_id: hospitalRecord}
+    var newTime = {$set: {averageWaitTime: currentWaitTime }}
+
+    Hospitals.update(currentHostpitalRecord, newTime, function (err,res) {
+      if (err) {
+        swal("Error", error.message, "error").then(function () {
+              window.location = "/#/adminpanel";
+            }
+        )
+      } else {
+        swal({
+          text: "Success!",
+          icon: "success",
+        }).then(function () {
+          window.location = "/#/adminpanel";
+        });
+      }
+    })
+  } //end handleUpdate
 
   const handleSubmit = (event) => {
     //submit into the correction collection
@@ -167,14 +222,15 @@ const AdminPanel = (props) => {
   const matchHospital = matchAdmin[0].profile.hospital;
 
   // Grab rows where the hospital value is equal to the hospital connected to the admin.
-  const rows = Patients.find({hospital: matchHospital}).fetch();
+  const rows = Patients.find({ hospital: matchHospital }).fetch();
 
-  console.log(rows);
+  //console.log(rows);
 
   const columns = [
-    { field: 'Patient ID', width:'150', valueGetter: (params) => `${params.row.patientID}`},
-    { field: 'First Name', width:'150', valueGetter: (params) => `${params.row.firstName}` },
+    { field: 'Patient ID', width: '150', valueGetter: (params) => `${params.row.patientID}` },
+    { field: 'First Name', width: '150', valueGetter: (params) => `${params.row.firstName}` },
     { field: 'Last Name', width: '150', valueGetter: (params) => `${params.row.lastName}` },
+
     { field: 'Reason', width:'150', valueGetter: (params) => `${params.row.reason}` },
     { field: 'Hospital', width:'150', valueGetter: (params) => `${params.row.hospital}` },
     { field: 'Admin ID', width:'250', valueGetter: (params) => `${params.row.adminID}` },
@@ -242,22 +298,37 @@ const AdminPanel = (props) => {
 
         <PanelHeader>Change Weighted Wait Time</PanelHeader>
 
-        <AdminTable>
-          <Header>
-            <RowEven>
-              <CellHeader>Current Time</CellHeader>
-              <CellHeader>Change To</CellHeader>
-              <CellHeader> </CellHeader>
-            </RowEven>
-          </Header>
-          <TableBody>
-            <RowOdd>
-              <CellRow /*Display Current Time */> </CellRow>
-              <CellRow /*Change Time TO*/> </CellRow>
-              <CellRow /*Submit The Changes*/>Submit</CellRow>
-            </RowOdd>
-          </TableBody>
-        </AdminTable>
+        <form onSubmit={handleUpdate}>
+          <AdminTable>
+            <Header>
+              <RowEven>
+                <CellHeader>Current Time</CellHeader>
+                <CellHeader>Change To</CellHeader>
+                <CellHeader> </CellHeader>
+              </RowEven>
+            </Header>
+            <TableBody>
+              <RowOdd>
+                <CellRow>{currentTime} </CellRow>
+                <CellRow>
+                  <TextField
+                      id="changeTime"
+                      label="changeTime"
+                      type="Change Time"
+                      placeholder={currentTime}
+                      onChange={(e) => setCurrentTime(e.target.value)}>
+                  </TextField>
+                </CellRow>
+                <CellRow /*Submit The Changes*/>Submit
+                  <Button type="submit" variant="contained">
+                    Change Average Wait Time
+                  </Button>
+                </CellRow>
+              </RowOdd>
+            </TableBody>
+          </AdminTable>
+
+        </form>
 
         <PanelHeader>List of Current Patients </PanelHeader>
         <div style={{ height: 250, width: '100%' }}>
@@ -272,15 +343,21 @@ const AdminPanel = (props) => {
 };
 
 AdminPanel.propTypes = {
+  hospital: PropTypes.array,
   ready: PropTypes.bool.isRequired,
 };
 
 const AdminPanelContainer = withTracker(() => {
   const subscription = Meteor.subscribe("Patient");
-
+  const hospitalSubscription = Meteor.subscribe("Hospital");
+  const facility = Meteor.users
+      .find({ _id: Meteor.userId }, { limit: 1 })
+      .fetch();
+  const match = facility[0].profile.hospital;
   return {
-    ready: subscription.ready(),
+    hospital: Hospitals.find({ facilityID: match }).fetch(),
+    ready: subscription.ready() && hospitalSubscription.ready(),
   };
 })(AdminPanel);
 
-export default AdminPanelContainer;
+export default withRouter(AdminPanelContainer);
