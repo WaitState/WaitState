@@ -111,6 +111,7 @@ const AdminPanel = (props) => {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [reason, setReason] = React.useState("");
+  const [toDelete, setToDelete] = React.useState(null);
 
   const generateID = () => {
     const tempID = Math.floor(Math.random() * 100000).toString();
@@ -224,18 +225,47 @@ const AdminPanel = (props) => {
   // Grab rows where the hospital value is equal to the hospital connected to the admin.
   const rows = Patients.find({ hospital: matchHospital }).fetch();
 
-  //console.log(rows);
+  // // A selected patient row where Patient is removed if selected patientID is = Patient.patientID
+  // const deletePatient = (selectedPatient) => {
+  //   Meteor.users.remove(rows.filter((user) => user.patientID === selectedPatient.patientID));
+  //   console.log(selectedPatient.patientID);
+  // }
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    const patientCheck = Patients.find({ patientID: toDelete }).fetch();
+    console.log(patientCheck);
+    const patientId = patientCheck[0]._id;
+    console.log(patientId);
+    const email = toDelete.toString()+"@temp.com";
+    console.log(email);
+    const userCheck = Meteor.users.find({}).fetch();
+    console.log(userCheck);
+    const userId = userCheck[0]._id;
+    Meteor.users.remove({ _id: userId });
+    Patients.remove( { _id: patientId  });
+  }
+
+  // Create columns for grid Table
   const columns = [
-    { field: 'Patient ID', width: '150', valueGetter: (params) => `${params.row.patientID}` },
-    { field: 'First Name', width: '150', valueGetter: (params) => `${params.row.firstName}` },
-    { field: 'Last Name', width: '150', valueGetter: (params) => `${params.row.lastName}` },
-
-    { field: 'Reason', width:'150', valueGetter: (params) => `${params.row.reason}` },
-    { field: 'Hospital', width:'150', valueGetter: (params) => `${params.row.hospital}` },
-    { field: 'Admin ID', width:'250', valueGetter: (params) => `${params.row.adminID}` },
-    { field: 'Queue Position', width:'250', valueGetter: (params) => `${params.row.qPos}` },
-  ];
+    { field: 'Patient ID', editable: true, width: '150', valueGetter: (params) => `${params.row.patientID}` },
+    { field: 'First Name', editable: true, width: '150', valueGetter: (params) => `${params.row.firstName}` },
+    { field: 'Last Name', editable: true,  width: '150', valueGetter: (params) => `${params.row.lastName}` },
+    { field: 'Reason', editable: true, width:'150', valueGetter: (params) => `${params.row.reason}` },
+    { field: 'Hospital', editable: true, width:'150', valueGetter: (params) => `${params.row.hospital}` },
+    { field: 'Admin ID', editable: true, width:'200', valueGetter: (params) => `${params.row.adminID}` },
+    { field: 'Queue Position', editable: true, width:'150', valueGetter: (params) => `${params.row.qPos}` },
+    { field: 'Delete', width:'100', renderCell: (patientID) => (
+          <Button
+              variant="contained"
+              color="primary"
+              onClick={() => deletePatient(patientID)}
+          >
+            Delete
+          </Button>
+          )
+    },
+];
 
   return (
       <AdminContainer>
@@ -327,7 +357,17 @@ const AdminPanel = (props) => {
               </RowOdd>
             </TableBody>
           </AdminTable>
+        </form>
 
+        <form onSubmit={handleDelete}
+        >
+          <input
+          type="text" id="patientSelect"
+          onChange={(e) => setToDelete(e.target.value)}
+          />
+          <Button type="submit">
+            Submit
+          </Button>
         </form>
 
         <PanelHeader>List of Current Patients </PanelHeader>
@@ -336,6 +376,7 @@ const AdminPanel = (props) => {
               getRowId={(r) => r._id}
               rows={rows}
               columns={columns}
+              checkboxSelection
           />
         </div>
       </AdminContainer>
