@@ -61,7 +61,11 @@ export default AdminLogin = ({ history }) => {
           onChange={(e) => setPassword(e.target.value)}
         ></MyInput>
 
-        <Button variant="contained" type="submit">
+        <Button
+          variant="contained"
+          sx={{ background: "#03B591" }}
+          type="submit"
+        >
           Login
         </Button>
       </form>

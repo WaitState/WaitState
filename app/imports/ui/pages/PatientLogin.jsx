@@ -52,7 +52,11 @@ export default PatientLogin = ({ history }) => {
           placeholder="Unique ID"
           onChange={(e) => setuniqueID(e.target.value)}
         ></MyInput>
-        <Button variant="contained" type="submit">
+        <Button
+          variant="contained"
+          sx={{ background: "#03B591" }}
+          type="submit"
+        >
           Check Status
         </Button>
       </form>

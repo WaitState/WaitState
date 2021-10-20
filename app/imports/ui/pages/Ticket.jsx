@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Meteor } from "meteor/meteor";
 import { styled } from "@mui/system";
-import { Button, Typography, Container, List, ListItem, Card, CardActions, CardContent, CardMedia } from "@mui/material";
+import { Typography, Container, List, ListItem, Card, CardActions, CardContent, CardMedia } from "@mui/material";
 
 const MyContainer = styled(Container)({
   display: "flex",
