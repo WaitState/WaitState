@@ -51,10 +51,6 @@ const Ticket = (props) => {
   if (hospital.length  === 0 && patient.length === 1) {
     hospital = Hospitals.find({ facilityID: patient[0].hospital }, {limit: 1}).fetch();
   }
-  console.log("Patient object: ", patient)
-  console.log("Hospital object: ", hospital)
-
-
 
   var reason = ""
   var id = ""
@@ -67,10 +63,8 @@ const Ticket = (props) => {
     location = result.hospital
     qPos = result.qPos
   })
-  //console.log(reason)
 
   hospital.map((result) => {
-    numbPatients = result.patientList.length - 1;
     average = result.averageWaitTime;
   });
 
