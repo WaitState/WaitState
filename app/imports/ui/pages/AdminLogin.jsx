@@ -34,7 +34,13 @@ export default AdminLogin = ({ history }) => {
         console.log(err.reason);
         // pops up if incorrect passsword or user not found
         setError(err.reason);
-      } else {
+      } 
+      //if logged in as hospital admin
+      else if (Roles.userIsInRole(Meteor.userId(), "Hospital Admin") == true){
+        history.push("/adminpanel");
+      }
+      //if logged in as patient or site admin
+      else {
         // TODO: redirect to admin page
         history.push("/");
         console.log(Accounts.users);
@@ -51,7 +57,7 @@ export default AdminLogin = ({ history }) => {
           fullWidth
           id="email"
           name="email"
-          placeholder="email"
+          placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
         ></MyInput>
         <MyInput

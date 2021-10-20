@@ -83,10 +83,28 @@ const PanelHeader = styled(Typography)({
   marginTop: "10px !important",
 });
 
-const SubmitPatientButton = styled(Button)({
+const MyTextField = styled(TextField)({
+  boxSizing: "border-box !important",
+  color: "rgba(0, 0, 0, 0.87) !important",
+  height:"1.4375em !important",
+  // padding:"18.5px 14px !important",
+  fontSize: "1rem !important",
+  // alignItems: "center !important",
+  fontWeight: "400 !important",
+  borderRadius: "4px !important",
+  // boxSizing: "content-box !important",
+})
+const SubmitButton = styled(Button)({
   background: "#03B591 !important",
+  color:"#fff !important",
+  padding:"6px 16px !important",
   margin: "10px !important",
-  fontSize: "17px !important",
+  fontWeight:"500 !important",
+  fontSize:"0.875rem !important",
+  borderRadius: "4px !important",
+  boxShadow:"0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12) !important",
+  transition:"background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
+  '&:hover' : {background: "#1565c0 !important", boxShadow:"0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12) !important"}
 });
 
 const AdminPanel = (props) => {
@@ -168,7 +186,7 @@ const AdminPanel = (props) => {
     const firstname = firstName;
     const lastname = lastName;
     const email = patientID + "@temp.com";
-    const roles = "";
+    const roles = "Patient";
     const password = "password";
     const patients = Patients.find({ hospital: hospital }).fetch();
     const qPos = patients.length + 1;
@@ -259,179 +277,135 @@ const AdminPanel = (props) => {
 
   // Create columns for grid Table
   const columns = [
-    {
-      field: "Patient ID",
-      editable: true,
-      width: "150",
-      valueGetter: (params) => `${params.row.patientID}`,
-    },
-    {
-      field: "First Name",
-      editable: true,
-      width: "150",
-      valueGetter: (params) => `${params.row.firstName}`,
-    },
-    {
-      field: "Last Name",
-      editable: true,
-      width: "150",
-      valueGetter: (params) => `${params.row.lastName}`,
-    },
-    {
-      field: "Reason",
-      editable: true,
-      width: "150",
-      valueGetter: (params) => `${params.row.reason}`,
-    },
-    {
-      field: "Hospital",
-      editable: true,
-      width: "150",
-      valueGetter: (params) => `${params.row.hospital}`,
-    },
-    {
-      field: "Admin ID",
-      editable: true,
-      width: "200",
-      valueGetter: (params) => `${params.row.adminID}`,
-    },
-    {
-      field: "Queue Position",
-      editable: true,
-      width: "150",
-      valueGetter: (params) => `${params.row.qPos}`,
-    },
-    {
-      field: "Delete",
-      width: "100",
-      renderCell: (patientID) => (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => deletePatient(patientID)}
-        >
-          Delete
-        </Button>
-      ),
-    },
-  ];
+    { field: 'Patient ID', editable: true, width: '150', valueGetter: (params) => `${params.row.patientID}` },
+    { field: 'First Name', editable: true, width: '150', valueGetter: (params) => `${params.row.firstName}` },
+    { field: 'Last Name', editable: true,  width: '150', valueGetter: (params) => `${params.row.lastName}` },
+    { field: 'Reason', editable: true, width:'150', valueGetter: (params) => `${params.row.reason}` },
+    { field: 'Hospital', editable: true, width:'150', valueGetter: (params) => `${params.row.hospital}` },
+    { field: 'Admin ID', editable: true, width:'200', valueGetter: (params) => `${params.row.adminID}` },
+    { field: 'Queue Position', editable: true, width:'150', valueGetter: (params) => `${params.row.qPos}` },
+];
 
   return (
-    <AdminContainer>
-      <PageHeader> Administrator Panel</PageHeader>
-      <PanelHeader>Check In a New Patient</PanelHeader>
-      <br />
-      <form onSubmit={handleSubmit}>
-        <AdminTable>
-          <Header>
-            <RowEven>
-              <CellHeader>
-                Patient ID:
-                {patientID}
-              </CellHeader>
-              <CellHeader>
-                First Name
-                <TextField
-                  id="patient first Name"
-                  label=""
-                  type="Patient first Name"
-                  placeholder="Bob"
-                  onChange={(e) => setFirstName(e.target.value)}
-                >
-                  {" "}
-                </TextField>
-              </CellHeader>
-              <CellHeader>
-                Last Name
-                <TextField
-                  id="patient last  Name"
-                  label=""
-                  type="Patient last Name"
-                  placeholder="Smith"
-                  onChange={(e) => setLastName(e.target.value)}
-                >
-                  {" "}
-                </TextField>
-              </CellHeader>
-              <CellHeader>
-                Reason
-                <TextField
-                  id="reason"
-                  label=""
-                  type="reason"
-                  placeholder="hurt foot"
-                  onChange={(e) => setReason(e.target.value)}
-                >
-                  {" "}
-                </TextField>
-              </CellHeader>
-            </RowEven>
-          </Header>
-        </AdminTable>
-        <SubmitPatientButton variant="contained" onClick={generateID}>
-          Generate unique patientID
-        </SubmitPatientButton>
-        <SubmitPatientButton type="submit" variant="contained">
-          Add New Patient
-          <span> </span>
-        </SubmitPatientButton>
-      </form>
-      <br />
-      <br />
-      <PanelHeader>Change Weighted Wait Time</PanelHeader>
+      <AdminContainer>
+        <PageHeader> Administrator Panel</PageHeader>
+        <PanelHeader>Check In a New Patient</PanelHeader>
+        <br/>
+        <form onSubmit={handleSubmit}>
+          <AdminTable>
+            <Header>
+              <RowEven>
+                <CellHeader>
+                  Patient ID:
+                  {patientID}
+                </CellHeader>
+                <CellHeader>
+                  First Name
+                  <MyTextField
+                      id="patient first Name"
+                      label=""
+                      type="Patient first Name"
+                      placeholder="  Bob"
+                      onChange={(e) => setFirstName(e.target.value)}
+                  >
+                    {" "}
+                  </MyTextField>
+                </CellHeader>
+                <CellHeader>
+                  Last Name
+                  <MyTextField
+                      id="patient last  Name"
+                      label=""
+                      type="Patient last Name"
+                      placeholder="  Smith"
+                      onChange={(e) => setLastName(e.target.value)}
+                  >
+                    {" "}
+                  </MyTextField>
+                </CellHeader>
+                <CellHeader>
+                  Reason
+                  <MyTextField
+                      id="reason"
+                      label=""
+                      type="reason"
+                      placeholder="  hurt foot"
+                      onChange={(e) => setReason(e.target.value)}
+                  >
+                    {" "}
+                  </MyTextField>
+                </CellHeader>
+              </RowEven>
+            </Header>
+          </AdminTable>
+          <SubmitButton variant="contained" onClick={generateID}>
+            Generate unique patientID
+          </SubmitButton>
+          <SubmitButton type="submit" variant="contained">
+            Add New Patient
+            <span> </span>
+          </SubmitButton>
+        </form>
+        <br/>
+        <br/>
+        <PanelHeader>Change Weighted Wait Time</PanelHeader>
 
-      <form onSubmit={handleUpdate}>
-        <AdminTable>
-          <Header>
-            <RowEven>
-              <CellHeader>Current Time</CellHeader>
-              <CellHeader>Change To</CellHeader>
-              <CellHeader> </CellHeader>
-            </RowEven>
-          </Header>
-          <TableBody>
-            <RowOdd>
-              <CellRow>{currentTime} </CellRow>
-              <CellRow>
-                <TextField
-                  id="changeTime"
-                  label=""
-                  type="Change Time"
-                  placeholder={currentTime}
-                  onChange={(e) => setCurrentTime(e.target.value)}
-                ></TextField>
-              </CellRow>
-              <CellRow /*Submit The Changes*/>
-                Submit
-                <Button type="submit" variant="contained">
-                  Change Average Wait Time
-                </Button>
-              </CellRow>
-            </RowOdd>
-          </TableBody>
-        </AdminTable>
-      </form>
-
-      <form onSubmit={handleDelete}>
-        <input
-          type="text"
+        <form onSubmit={handleUpdate}>
+          <AdminTable>
+            <Header>
+              <RowEven>
+                <CellHeader>Current Time</CellHeader>
+                <CellHeader>Change To</CellHeader>
+                <CellHeader> </CellHeader>
+              </RowEven>
+            </Header>
+            <TableBody>
+              <RowOdd>
+                <CellRow>{currentTime} </CellRow>
+                <CellRow>
+                  <MyTextField
+                      id="changeTime"
+                      label=""
+                      type="Change Time"
+                      placeholder= {`  ` + currentTime}
+                      onChange={(e) => setCurrentTime(e.target.value)}>
+                  </MyTextField>
+                </CellRow>
+                <CellRow /*Submit The Changes*/>
+                  <SubmitButton type="submit" variant="contained">
+                    Change Average Wait Time
+                  </SubmitButton>
+                </CellRow>
+              </RowOdd>
+            </TableBody>
+          </AdminTable>
+        </form>
+        <Container sx={{width: "100% !important"}}>
+        <form onSubmit={handleDelete}
+        >
+          <MyTextField
+          type="text" 
           id="patientSelect"
+          placeholder="  patient Id"
           onChange={(e) => setToDelete(e.target.value)}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-      <br />
-      <PanelHeader>List of Current Patients </PanelHeader>
-      <div style={{ height: 250, width: "100%" }}>
-        <DataGrid
-          getRowId={(r) => r._id}
-          rows={rows}
-          columns={columns}
-          checkboxSelection
-        />
-      </div>
-      <br />
-    </AdminContainer>
+
+          />
+          <SubmitButton type="submit">
+            Checkout Patient
+          </SubmitButton>
+        </form>
+        </Container>
+        <br/>
+        <PanelHeader>List of Current Patients </PanelHeader>
+        <div style={{ height: 250, width: '100%' }}>
+          <DataGrid
+              getRowId={(r) => r._id}
+              rows={rows}
+              columns={columns}
+          />
+        </div>
+        <br/>
+      </AdminContainer>
   );
 };
 

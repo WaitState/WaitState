@@ -19,6 +19,8 @@ import {
   Dialog,
   DialogTitle,
   Divider,
+  Button,
+  Typography,
 } from "@mui/material";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -43,6 +45,9 @@ const MenuBar = (props) => {
   const isHospitalAdmin =
     Roles.userIsInRole(Meteor.userId(), "admin") ||
     Roles.userIsInRole(Meteor.userId(), "Hospital Admin");
+
+  const isPatient =
+      Roles.userIsInRole(Meteor.userId(), "Patient")
 
   const openDrawer = (event) => {
     setDrawerAnchorEl(event.currentTarget);
@@ -115,6 +120,13 @@ const MenuBar = (props) => {
               </ListItem>
             </div>
           ) : null}
+          { isPatient ? (
+              <div>
+                <ListItem button component={Link} to="/ticket">
+                  <ListItemText primary="Patient Ticket" />
+                </ListItem>
+              </div>
+          ) : null}
         </List>
       </Box>
     </Drawer>
@@ -173,6 +185,9 @@ const MenuBar = (props) => {
             <MenuIcon />
           </IconButton>
           {renderDrawer}
+          {/* display role in text */}
+          {isHospitalAdmin == true && <Typography>Welcome Hospital Admin!</Typography>}
+          {isSiteAdmin == true && <Typography>Welcome Site Admin!</Typography>}
           <Box sx={{flexGrow: 1}} />
           <IconButton
             size="large"
