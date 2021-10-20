@@ -74,9 +74,6 @@ const HospitalPage = (props) => {
             <Typography>{hospital[0].phoneNumber}</Typography>
             <SubHeadingTypography variant="h6">Status</SubHeadingTypography>
             <Typography>
-              {`Current Patients: ` + hospital[0].patientList}
-            </Typography>
-            <Typography>
               {`Wait time: ` + hospital[0].averageWaitTime}
             </Typography>
           </Information>
