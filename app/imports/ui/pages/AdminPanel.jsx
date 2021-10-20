@@ -159,30 +159,16 @@ const AdminPanel = (props) => {
     );
   };
 
-  const rows = [Patients.find({}).fetch()];
+  const rows = Patients.find({}).fetch();
   console.log(rows);
 
-  // const newData = row.map((el, i) => {
-  //   return {
-  //     id: el.patientID,
-  //     firstName: firstName,
-  //     lastName: lastName,
-  //     reason: reason,
-  //     adminID: adminID,
-  //     hospital: hospital,
-  //   };
-  // });
-  //
-  // console.log(newData);
-
   const columns = [
-    { field: '_id', width:'150', },
-    { field: 'Patient ID', width:'150', },
-    { field: 'First Name', width:'150' },
-    { field: 'Last Name', width: '150' },
-    { field: 'Reason', width:'150' },
-    { field: 'Admin ID', width:'150' },
-    { field: 'Hospital', width:'150' },
+    { field: 'Patient ID', width:'150', valueGetter: (params) => `${params.row.patientID}`},
+    { field: 'First Name', width:'150', valueGetter: (params) => `${params.row.firstName}` },
+    { field: 'Last Name', width: '150', valueGetter: (params) => `${params.row.lastName}` },
+    { field: 'Reason', width:'150', valueGetter: (params) => `${params.row.reason}` },
+    { field: 'Hospital', width:'150', valueGetter: (params) => `${params.row.hospital}` },
+    { field: 'Admin ID', width:'250', valueGetter: (params) => `${params.row.adminID}` },
   ];
 
   return (
