@@ -171,6 +171,9 @@ const AdminPanel = (props) => {
     const email = patientID + "@temp.com";
     const roles = "";
     const password = "password";
+    const patients = Patients.find({hospital: hospital}).fetch();
+    const qPos = patients.length + 1;
+    console.log(qPos);
     Meteor.call(
         "createAccount",
         firstname,
@@ -194,6 +197,7 @@ const AdminPanel = (props) => {
           checkInTime,
           adminID,
           hospital,
+          qPos,
         },
         (error) => {
           if (error) {
@@ -226,9 +230,11 @@ const AdminPanel = (props) => {
     { field: 'Patient ID', width: '150', valueGetter: (params) => `${params.row.patientID}` },
     { field: 'First Name', width: '150', valueGetter: (params) => `${params.row.firstName}` },
     { field: 'Last Name', width: '150', valueGetter: (params) => `${params.row.lastName}` },
-    { field: 'Reason', width: '150', valueGetter: (params) => `${params.row.reason}` },
-    { field: 'Hospital', width: '150', valueGetter: (params) => `${params.row.hospital}` },
-    { field: 'Admin ID', width: '250', valueGetter: (params) => `${params.row.adminID}` },
+
+    { field: 'Reason', width:'150', valueGetter: (params) => `${params.row.reason}` },
+    { field: 'Hospital', width:'150', valueGetter: (params) => `${params.row.hospital}` },
+    { field: 'Admin ID', width:'250', valueGetter: (params) => `${params.row.adminID}` },
+    { field: 'Queue Position', width:'250', valueGetter: (params) => `${params.row.qPos}` },
   ];
 
   return (
