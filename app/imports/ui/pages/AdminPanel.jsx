@@ -157,13 +157,13 @@ const AdminPanel = (props) => {
     );
   };
 
-  const adminUser = Meteor.users
+  const matchAdmin = Meteor.users
       .find({ _id: Meteor.userId }, { limit: 1 })
       .fetch();
-  const hospital2 = adminUser[0].profile.hospital;
+  const matchHospital = matchAdmin[0].profile.hospital;
 
   // Grab rows where the hospital value is equal to the hospital connected to the admin.
-  const rows = Patients.find({hospital: hospital2}).fetch();
+  const rows = Patients.find({hospital: matchHospital}).fetch();
 
   console.log(rows);
 
