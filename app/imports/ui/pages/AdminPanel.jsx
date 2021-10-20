@@ -23,19 +23,19 @@ import { withRouter } from 'react-router-dom';
 //style the outer container
 const AdminContainer = styled(Container)({
   //background: "#03B591",
-  display: "flex",
-  justifyContent: "space-between",
-  flexDirection: "column",
-  margin: "50px auto",
-  textAlign: "center",
-  alignItems: "center",
-  width: "90%",
-  fontSize: "xx-large",
+  display: "flex !important",
+  justifyContent: "space-between !important",
+  flexDirection: "column !important",
+  margin: "50px auto !important",
+  textAlign: "center !important",
+  alignItems: "center !important",
+  width: "90% !important",
+  fontSize: "xx-large !important",
 });
 
 //Style the entire table
 const AdminTable = styled(Table)({
-  margin: "15px auto",
+  margin: "15px auto !important",
 });
 
 //Style the Header of the table
@@ -43,50 +43,50 @@ const Header = styled(TableHead)({});
 
 //For header and even Rows to change the color
 const RowEven = styled(TableRow)({
-  background: "#FFFFFF",
-  borderStyle: "Solid",
-  borderRight: "Solid",
-  borderLeft: "Solid",
+  background: "#FFFFFF !important",
+  borderStyle: "Solid !important",
+  borderRight: "Solid !important",
+  borderLeft: "Solid !important",
 });
 
 //For all odd rows
 const RowOdd = styled(TableRow)({
-  background: "#D3D3D3",
-  borderStyle: "Solid",
-  borderRight: "Solid",
-  borderLeft: "Solid",
+  background: "#D3D3D3 !important",
+  borderStyle: "Solid !important",
+  borderRight: "Solid !important",
+  borderLeft: "Solid !important",
 });
 
 //Stylize the Cells in the header
 const CellHeader = styled(TableCell)({
-  borderTop: "Solid",
-  borderLeft: "Solid",
-  borderRight: "Solid",
-  borderBottom: "Solid",
+  borderTop: "Solid !important",
+  borderLeft: "Solid !important",
+  borderRight: "Solid !important",
+  borderBottom: "Solid !important",
 });
 
 //Stylize the cells NOt in the header
 const CellRow = styled(TableCell)({
-  borderBottom: "Solid",
+  borderBottom: "Solid !important",
 });
 
 const PageHeader = styled(Typography)({
-  fontSize: "75px",
-  fontWeight: "bold",
-  marginBottom: "10px",
+  fontSize: "75px !important",
+  fontWeight: "bold !important",
+  marginBottom: "10px !important",
 });
 
 const PanelHeader = styled(Typography)({
-  fontSize: "30px",
-  textDecoration: "underline",
-  marginBottom: "5px",
-  marginTop: "10px",
+  fontSize: "30px !important" ,
+  textDecoration: "underline !important",
+  marginBottom: "5px !important",
+  marginTop: "10px !important",
 });
 
 const SubmitPatientButton = styled(Button)({
-  background: "#03B591",
-  margin: "10px",
-  fontSize: "17px",
+  background: "#03B591 !important",
+  margin: "10px !important",
+  fontSize: "17px !important",
 });
 
 const AdminPanel = (props) => {
@@ -241,6 +241,7 @@ const AdminPanel = (props) => {
       <AdminContainer>
         <PageHeader> Administrator Panel</PageHeader>
         <PanelHeader>Check In a New Patient</PanelHeader>
+        <br/>
         <form onSubmit={handleSubmit}>
           <AdminTable>
             <Header>
@@ -253,7 +254,7 @@ const AdminPanel = (props) => {
                   First Name
                   <TextField
                       id="patient first Name"
-                      label="patient first Name"
+                      label=""
                       type="Patient first Name"
                       placeholder="Bob"
                       onChange={(e) => setFirstName(e.target.value)}
@@ -265,7 +266,7 @@ const AdminPanel = (props) => {
                   Last Name
                   <TextField
                       id="patient last  Name"
-                      label="patient last Name"
+                      label=""
                       type="Patient last Name"
                       placeholder="Smith"
                       onChange={(e) => setLastName(e.target.value)}
@@ -277,7 +278,7 @@ const AdminPanel = (props) => {
                   Reason
                   <TextField
                       id="reason"
-                      label="reason"
+                      label=""
                       type="reason"
                       placeholder="hurt foot"
                       onChange={(e) => setReason(e.target.value)}
@@ -293,9 +294,11 @@ const AdminPanel = (props) => {
           </SubmitPatientButton>
           <SubmitPatientButton type="submit" variant="contained">
             Add New Patient
+            <span> </span>
           </SubmitPatientButton>
         </form>
-
+        <br/>
+        <br/>
         <PanelHeader>Change Weighted Wait Time</PanelHeader>
 
         <form onSubmit={handleUpdate}>
@@ -313,7 +316,7 @@ const AdminPanel = (props) => {
                 <CellRow>
                   <TextField
                       id="changeTime"
-                      label="changeTime"
+                      label=""
                       type="Change Time"
                       placeholder={currentTime}
                       onChange={(e) => setCurrentTime(e.target.value)}>
@@ -329,7 +332,7 @@ const AdminPanel = (props) => {
           </AdminTable>
 
         </form>
-
+        <br/>
         <PanelHeader>List of Current Patients </PanelHeader>
         <div style={{ height: 250, width: '100%' }}>
           <DataGrid
@@ -338,6 +341,7 @@ const AdminPanel = (props) => {
               columns={columns}
           />
         </div>
+        <br/>
       </AdminContainer>
   );
 };
