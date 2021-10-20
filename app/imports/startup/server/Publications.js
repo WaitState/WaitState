@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Patients } from '../../api/patient/Patient';
 import { Hospitals } from '../../api/hospital/Hospital';
+//import Hospital from '../../ui/pages/Hospital';
 
 
 // User-level publication.
@@ -33,7 +34,8 @@ Meteor.publish('Patient', function publish() {
 
 //Publish a role for each hospital
 Meteor.publish('Hospital', function publish() {
-  return Hospitals.find();
-  return this.ready();
-});
 
+
+    return Hospitals.find()
+
+});
