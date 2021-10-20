@@ -91,7 +91,7 @@ const SubmitPatientButton = styled(Button)({
 
 const AdminPanel = (props) => {
 
-  const { hospital } = props;
+  const { hospital, ready } = props;
   console.log("hospital", hospital)
 
   var currentTime = ""
@@ -231,15 +231,15 @@ const AdminPanel = (props) => {
   //   console.log(selectedPatient.patientID);
   // }
 
-  const handleDelete = (e) => {
-    e.preventDefault();
+  const handleDelete = () => {
+    console.log(toDelete);
     const patientCheck = Patients.find({ patientID: toDelete }).fetch();
     console.log(patientCheck);
     const patientId = patientCheck[0]._id;
     console.log(patientId);
     const email = toDelete.toString()+"@temp.com";
     console.log(email);
-    const userCheck = Meteor.users.find({}).fetch();
+    const userCheck = Meteor.users.find({username: email}).fetch();
     console.log(userCheck);
     const userId = userCheck[0]._id;
     Meteor.users.remove({ _id: userId });
@@ -398,7 +398,7 @@ const AdminPanelContainer = withTracker(() => {
   const match = facility[0].profile.hospital;
   return {
     hospital: Hospitals.find({ facilityID: match }).fetch(),
-    ready: subscription.ready() && hospitalSubscription.ready() && userSubscription,
+    ready: subscription.ready() && hospitalSubscription.ready() && userSubscription.ready(),
   };
 })(AdminPanel);
 

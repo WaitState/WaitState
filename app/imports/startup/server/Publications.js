@@ -44,3 +44,16 @@ Meteor.publish('Hospital', function publish() {
     return Hospitals.find()
 
 });
+
+Meteor.users.allow({
+  remove: function (userId, doc) {
+    if (true) {
+      console.log("Access granted. You are an administrator and you are not trying to delete your own document.");
+      return true;
+    } else {
+      console.log("Access denied. You are not an administrator or you are trying to delete your own document.");
+      return false;
+    }
+  },
+  fetch: []
+});
