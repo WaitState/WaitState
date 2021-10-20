@@ -42,7 +42,6 @@ const reason = "knife cuts";
 const Ticket = (props) => {
   var numbPatients = "";
   var average = "";
-<<<<<<< HEAD
   const { ready } = props;
   var hospital = [];
   var patient = [];
@@ -54,18 +53,7 @@ const Ticket = (props) => {
     hospital = Hospitals.find({ facilityID: patient[0].hospital }, {limit: 1}).fetch();
   }
   console.log(patient, hospital)
-=======
-  const { ready, patient } = props;
-  const [hospital, setHospital] = React.useState([]);
 
-  if (ready && hospital === []) {
-    setHospital(Hospitals.find({ facilityID: patient[0].hospital }).fetch());
-  }
-
-
-
-  //console.log(patient, hospital);
->>>>>>> dacb216b5f96046866f38e97821f8ef1b60268e9
   hospital.map((result) => {
     numbPatients = result.patientList.length - 1;
     average = result.averageWaitTime;
