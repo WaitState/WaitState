@@ -34,7 +34,7 @@ export default PatientLogin = ({ history }) => {
         console.log(err.reason);
         setError(err.reason);
       } else {
-        history.push("/ticket");
+        history.push("/ticket/" + uniqueID);
         console.log(Accounts.users);
       }
     });
