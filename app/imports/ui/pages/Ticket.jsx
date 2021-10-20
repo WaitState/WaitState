@@ -72,10 +72,6 @@ const Ticket = (props) => {
   //update estimated check-in time according to wait time
   var newTime = new Date(checkInTime.getTime() + waitTime*60000);
   var ampm = newTime.getHours() >= 12 ? 'pm' : 'am';
-  let formatted = newTime.toLocaleString('en-US', {
-    minimumIntegerDigits: 4,
-  })
-  console.log(formatted);
 
   return (
     <MyContainer>
