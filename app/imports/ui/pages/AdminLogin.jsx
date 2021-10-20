@@ -33,7 +33,7 @@ export default AdminLogin = ({ history }) => {
         setError(err.reason);
       } else {
         // TODO: redirect to admin page
-        // history.push("/admin");
+        history.push("/adminpanel");
         console.log(Accounts.users);
       }
     });

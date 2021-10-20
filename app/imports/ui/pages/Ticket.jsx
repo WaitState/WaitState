@@ -24,12 +24,10 @@ var waitTime = 15;
 const checkInTime = new Date();
 const reason = "knife cuts"
 
-// which hositpal
-// number patients at that hostipal
 
 const Ticket = (props) => {
 
-  console.log("props: ", props);
+  //console.log("props: ", props);
   const { hospital} = props;
   var numbPatients = ""
   var average = ""
@@ -83,7 +81,8 @@ Ticket.propTypes = {
 const TicketContainer = withTracker(() => {
   const subscription = Meteor.subscribe("Hospital");
   return {
-    //Facility ID will need to be changed
+    //Facility ID will need to be changed to match the hospital the patient is
+    //actually at
     hospital: Hospitals.find({facilityID: "10001"}).fetch(),
     ready: subscription.ready(),
   };
