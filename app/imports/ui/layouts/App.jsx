@@ -33,7 +33,6 @@ const App = (props) => {
           <Route path="/login" component={PatientLogin} />
 
           <HospitalAdminProtectedRoute path="/adminpanel" component={AdminPanel}/>
-
           <ProtectedRoute path="/ticket/:pid" component={Ticket} />
           <Route path="/hospital/:hid" component={Hospital} />
           {/* <Route path="/signout" component={Signout}/> */}
