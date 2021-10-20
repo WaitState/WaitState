@@ -44,7 +44,7 @@ const Register = (props) => {
   const [hospitalName, setHospitalName] = useState("");
   const [error, setError] = useState("");
   const { ready, history } = props;
-  const roles = "Hospital Admin";
+  const role = "Hospital Admin";
   const hospitalDocument = Hospitals.find().fetch();
   var arrayOfHospitals = hospitalDocument.map((item) => item.facilityName);
 
@@ -64,13 +64,13 @@ const Register = (props) => {
       lastname,
       email,
       password,
-      roles,
+      role,
       hospital,
       (err) => {
         if (err) {
           setError(err.reason);
         } else {
-          history.push("/admin/login");
+          history.push("/");
         }
       }
     );
