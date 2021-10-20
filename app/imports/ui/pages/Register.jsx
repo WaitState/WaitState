@@ -123,15 +123,15 @@ const Register = (props) => {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         ></MyInput>
-        <Button variant="contained" type="submit">
+        <Button
+          variant="contained"
+          sx={{ background: "#03B591" }}
+          type="submit"
+        >
           {" "}
           Register
         </Button>
       </form>
-      <span>or</span>
-      <Button variant="contained" onClick={(e) => history.push("/admin/login")}>
-        Log in
-      </Button>
     </Container>
   );
 };
