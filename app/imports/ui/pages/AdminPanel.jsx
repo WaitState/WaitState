@@ -248,9 +248,7 @@ const AdminPanel = (props) => {
   // }
 
   const handleDelete = () => {
-    console.log(toDelete);
     const patientCheck = Patients.find({ patientID: toDelete }).fetch();
-    console.log(patientCheck);
     const patientId = patientCheck[0]._id;
     console.log(patientId);
     const email = toDelete.toString() + "@temp.com";
@@ -258,6 +256,23 @@ const AdminPanel = (props) => {
     const userCheck = Meteor.users.find({ username: email }).fetch();
     console.log(userCheck);
     const userId = userCheck[0]._id;
+    const patientHospital = Patients.find ({ hospital: patientCheck[0].hospital}).fetch();
+    for (let i = patientCheck[0].qPos-1; i < patientHospital.length; i++){
+      console.log(i);
+      if ( patientHospital[i].qPos > patientCheck[0].qPos ) {
+        console.log(patientHospital[i]._id);
+        console.log(patientHospital[i].qPos - 1);
+        Patients.update({ _id: patientHospital[i]._id}, {$set: {qPos: i}})
+      }
+    }
+    // Patients.update(
+    //     { patientQ : { $gte: patientQ } },
+    //     { $inc: { qPos: - 1 } },
+    //     {
+    //       multi: true,
+    //       arrayFilters: [ { patientQ : { $gte: patientQ }}]
+    //     }
+    // )
     Meteor.users.remove({ _id: userId });
     Patients.remove({ _id: patientId }, (error) => {
       if (error) {
