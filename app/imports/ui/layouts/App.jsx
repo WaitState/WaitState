@@ -12,8 +12,6 @@ import Home from "../pages/Home";
 import MenuBar from "../components/MenuBar";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
-
-
 import AdminPanel from "../pages/AdminPanel";
 import AdminLogin from "../pages/AdminLogin";
 import PatientLogin from "../pages/PatientLogin";
@@ -35,8 +33,7 @@ const App = (props) => {
           <Route path="/login" component={PatientLogin} />
 
           <HospitalAdminProtectedRoute path="/adminpanel" component={AdminPanel}/>
-
-          <Route path="/ticket" component={Ticket} />
+          <ProtectedRoute path="/ticket/:pid" component={Ticket} />
           <Route path="/hospital/:hid" component={Hospital} />
           {/* <Route path="/signout" component={Signout}/> */}
           {/* <ProtectedRoute path="/edit/:_id" component={EditStuff}/>*/}

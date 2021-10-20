@@ -57,3 +57,12 @@ Meteor.users.allow({
   },
   fetch: []
 });
+
+Meteor.publish('HospitalSelective', function (key, value) {
+  const publications = [];
+  publications.push(Company.find(
+    {
+      key: value,
+    },
+  ));
+});
